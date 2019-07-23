@@ -10,8 +10,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page='basePage.jsp'/>
-<fmt:setBundle basename="glossary"/>
+
 <fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="${bundle}"/>
 
 <html>
 <head>
@@ -32,12 +33,12 @@
     <table class="form">
         <tr>
             <td width="30%">
-                <fmt:message key="label.authorisation.email"/>: <br>
+                <fmt:message key="label.authorisation.email"/>: <br><br>
                 <fmt:message key="label.authorisation.password"/>: <br>
                 <br>
             </td>
             <td style="float: left; padding: 0px">
-                    <input type="text" name="email"> <br>
+                    <input type="text" name="email"> <br><br>
                     <input type="password" name="password"> <br>
             </td>
         </tr>

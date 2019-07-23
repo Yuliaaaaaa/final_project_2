@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import org.apache.log4j.Logger;
 import repositories.UserRepository;
 import services.UserService;
 
@@ -13,6 +14,7 @@ import java.sql.SQLException;
  */
 public class AuthorisationController {
     private static UserService userService = UserService.getUserService();
+    private static Logger logger = Logger.getLogger(AuthorisationController.class);
 
     public static String doGet(HttpServletRequest req) {
         req.getSession().removeAttribute("user");
@@ -29,6 +31,7 @@ public class AuthorisationController {
         if(user != null){
             req.getSession()
                     .setAttribute("user", user);
+            logger.info("Authorisation success: " + user.getFirstName() + " " + user.getLastName());
             return "pages/userInfo.jsp";
         }
         else{

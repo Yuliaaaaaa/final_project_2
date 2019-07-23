@@ -1,6 +1,7 @@
 package servlets;
 
 import controllers.FrontController;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,9 @@ import java.sql.SQLException;
  * @project publishing
  */
 public class DispatcherServlet extends HttpServlet {
+
+    private static Logger logger = Logger.getLogger(DispatcherServlet.class);
+
     /**
      * @param req
      * @param resp
@@ -40,6 +44,7 @@ public class DispatcherServlet extends HttpServlet {
             page = FrontController.doPost(req);
         } catch (SQLException e) {
             page = "errorPages/SQLException.jsp";
+            logger.error("SQLException occured!");
         }
         req.getRequestDispatcher(page)
                 .forward(req, resp);

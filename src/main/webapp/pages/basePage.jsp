@@ -10,10 +10,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <%--<fmt:setBundle basename="glossary"/>
-    <fmt:setLocale value="ru"/>--%>
-    <fmt:setBundle basename="glossary"/>
+
     <fmt:setLocale value="${locale}"/>
+    <fmt:setBundle basename="${bundle}"/>
+
     <title>Base</title>
     <style>
         body {
@@ -31,7 +31,8 @@
             letter-spacing: 0.05em;
             cursor: pointer;
             font-size: 18px;
-            margin: 20px 150px 0px;
+            margin: auto;
+            margin-top: 20px;
             padding: 0;
         }
 
@@ -40,7 +41,7 @@
                         box-shadow: 0px 1px 1px #bdc3c7;
             height: 60px;
             margin: 0 0 0px;
-            width: 77%;
+            width: max-content;
             display: block;
         }
 
@@ -190,10 +191,14 @@
             <li><a href="#"><fmt:message key="label.mainMenu.signUp"/> </a></li>
         </c:otherwise>
     </c:choose>
-    <select id="locale" style="margin: 20px 20px; float: right">
-        <option>EN</option>
-        <option>RU</option>
+    <li>
+    <form method="get">
+    <select name="locale" style="margin: 20px 20px; float: right" onchange="this.form.submit()">
+        <option value="en" ${locale eq 'en' ? 'selected' : ''}>EN</option>
+        <option value="ru" ${locale eq 'ru' ? 'selected' : ''}>RU</option>
     </select>
+    </form>
+    </li>
 </ul>
 </body>
 </html>

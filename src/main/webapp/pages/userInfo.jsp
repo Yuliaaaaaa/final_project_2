@@ -10,8 +10,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page='basePage.jsp'/>
-<fmt:setBundle basename="glossary"/>
-<fmt:setLocale value="en"/>
+
+
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="${bundle}"/>
 
 <html>
 <head>
