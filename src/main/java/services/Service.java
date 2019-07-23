@@ -10,7 +10,7 @@ import java.util.List;
  * @project publishing
  */
 public class Service<T> {
-    private Repository<T> repository;
+    protected Repository<T> repository;
 
     public Service(Repository<T> repository) {
         this.repository = repository;

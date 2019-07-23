@@ -159,4 +159,18 @@ public class UserRepository implements Repository<User> {
         }
         return users;
     }
+
+    public User checkAuthorizationInfo(String email, String password) throws SQLException {
+        String sqlSelect = "SELECT * FROM Users WHERE email= ? AND `password`= ?;";
+        Connection connection = ConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+        preparedStatement.setString(1, email);
+        preparedStatement.setString(2, password);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<User> users = getItems(resultSet);
+        if (users.size() != 0)
+            return users.get(0);
+         else return null;
+    }
+
 }

@@ -1,0 +1,67 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: User
+  Date: 22.07.2019
+  Time: 16:06
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:include page='basePage.jsp'/>
+<fmt:setBundle basename="glossary"/>
+<fmt:setLocale value="${locale}"/>
+
+<html>
+<head>
+    <title>Authorisation</title>
+    <style>
+        .form {
+            height: 100px;
+            width: 500px;
+            padding: 30px 100px 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h3><fmt:message key="label.mainMenu.signIn"/></h3><hr align="left">
+    <form method="post" action="/authorisation">
+    <table class="form">
+        <tr>
+            <td width="30%">
+                <fmt:message key="label.authorisation.email"/>: <br>
+                <fmt:message key="label.authorisation.password"/>: <br>
+                <br>
+            </td>
+            <td style="float: left; padding: 0px">
+                    <input type="text" name="email"> <br>
+                    <input type="password" name="password"> <br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" height="30px">
+                <c:choose>
+                    <c:when test="${fail eq true}">
+                        <p class="error"><fmt:message key="error.wrongInput.incorrectData"/></p>
+                    </c:when>
+                    <c:when test="${emptyField eq true}">
+                        <p class="error"><fmt:message key="error.wrongInput.allFieldsRequired"/></p>
+                    </c:when>
+                </c:choose>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn" style="float: right"><span><fmt:message key="label.mainMenu.signIn"/></span></button>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+</div>
+
+</body>
+</html>
