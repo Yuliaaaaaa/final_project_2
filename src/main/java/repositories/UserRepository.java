@@ -63,15 +63,15 @@ public class UserRepository implements Repository<User> {
     }
 
     /**
-     * @param item
+     * @param id
      * @throws SQLException
      */
     @Override
-    public void delete(User item) throws SQLException {
+    public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM Users WHERE user_id = ?;";
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-        preparedStatement.setInt(1, item.getUserId());
+        preparedStatement.setInt(1, id);
         preparedStatement.execute();
         connection.close();
     }

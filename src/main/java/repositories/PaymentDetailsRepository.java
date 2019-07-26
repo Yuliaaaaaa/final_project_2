@@ -32,15 +32,15 @@ public class PaymentDetailsRepository implements Repository<PaymentDetail> {
     }
 
     /**
-     * @param item
+     * @param id
      * @throws SQLException
      */
     @Override
-    public void delete(PaymentDetail item) throws SQLException {
+    public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM `Payments details` WHERE details_id = ?;";
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-        preparedStatement.setInt(1, item.getDetailsId());
+        preparedStatement.setInt(1, id);
         preparedStatement.execute();
         connection.close();
     }

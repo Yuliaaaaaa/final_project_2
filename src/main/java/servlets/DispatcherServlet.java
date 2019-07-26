@@ -1,5 +1,6 @@
 package servlets;
 
+import commonlyUsedStrings.PageLocation;
 import controllers.FrontController;
 import org.apache.log4j.Logger;
 
@@ -26,9 +27,16 @@ public class DispatcherServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String page = FrontController.doGet(req);
-        req.getRequestDispatcher(page)
-                .forward(req, resp);
+        String page = null;
+        try {
+            page = FrontController.doGet(req);
+        } catch (SQLException e) {
+            page = PageLocation.SQL_EXCEPTION;
+            logger.error("SQLException occurred!");
+        }
+        if (page != null)
+            req.getRequestDispatcher(page)
+                    .forward(req, resp);
     }
 
     /**
@@ -41,12 +49,13 @@ public class DispatcherServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page = null;
         try {
-            page = FrontController.doPost(req);
+            page = FrontController.doPost(req, resp);
         } catch (SQLException e) {
-            page = "errorPages/SQLException.jsp";
-            logger.error("SQLException occured!");
+            page = PageLocation.SQL_EXCEPTION;
+            logger.error("SQLException occurred!");
         }
-        req.getRequestDispatcher(page)
-                .forward(req, resp);
+        if (page != null)
+            req.getRequestDispatcher(page)
+                    .forward(req, resp);
     }
 }

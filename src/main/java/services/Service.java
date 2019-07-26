@@ -19,8 +19,8 @@ public class Service<T> {
     public void add(T item) throws SQLException{
         repository.add(item);
     }
-    public void delete(T item) throws SQLException{
-        repository.delete(item);
+    public void delete(int id) throws SQLException{
+        repository.delete(id);
     }
     public void update(T item) throws SQLException{
         repository.update(item);

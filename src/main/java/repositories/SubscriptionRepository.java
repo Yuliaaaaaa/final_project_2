@@ -33,15 +33,15 @@ public class SubscriptionRepository implements Repository<Subscription> {
     }
 
     /**
-     * @param item
+     * @param id
      * @throws SQLException
      */
     @Override
-    public void delete(Subscription item) throws SQLException {
+    public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM Subscriptions WHERE subscription_id = ?;;";
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-        preparedStatement.setInt(1, item.getSubscriptionId());
+        preparedStatement.setInt(1, id);
         preparedStatement.execute();
         connection.close();
     }

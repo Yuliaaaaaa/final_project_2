@@ -1,5 +1,6 @@
 package controllers;
 
+import commonlyUsedStrings.PageLocation;
 import models.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 public class UserPageController {
 
     public static String doGet(HttpServletRequest req) {
-        return "pages/userInfo.jsp";
+        return PageLocation.USER_INFO;
     }
 }

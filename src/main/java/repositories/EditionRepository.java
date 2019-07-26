@@ -1,6 +1,8 @@
 package repositories;
 
+import enums.Category;
 import enums.Periodicity;
+import factories.CategoryFactory;
 import factories.PeriodicityFactory;
 import jdbc.ConnectionPool;
 import models.Edition;
@@ -27,7 +29,7 @@ public class EditionRepository implements Repository<Edition> {
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setString(1, item.getEditionTitle());
-        preparedStatement.setString(2, item.getCategory());
+        preparedStatement.setString(2, item.getCategory().toString().toLowerCase());
         preparedStatement.setString(3, item.getPeriodicity().toString().toLowerCase());
         preparedStatement.setString(4, item.getDescription());
         preparedStatement.setDouble(5, item.getPrice());
@@ -36,14 +38,14 @@ public class EditionRepository implements Repository<Edition> {
     }
 
     /**
-     * @param item
+     * @param id
      */
     @Override
-    public void delete(Edition item) throws SQLException {
+    public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM  Editions WHERE edition_id = ?;";
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-        preparedStatement.setInt(1, item.getEditionId());
+        preparedStatement.setInt(1, id);
         preparedStatement.execute();
         connection.close();
     }
@@ -59,7 +61,7 @@ public class EditionRepository implements Repository<Edition> {
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setString(1, item.getEditionTitle());
-        preparedStatement.setString(2, item.getCategory());
+        preparedStatement.setString(2, item.getCategory().toString().toLowerCase());
         preparedStatement.setString(3, item.getPeriodicity().toString().toLowerCase());
         preparedStatement.setString(4, item.getDescription());
         preparedStatement.setDouble(5, item.getPrice());
@@ -105,7 +107,7 @@ public class EditionRepository implements Repository<Edition> {
         while (resultSet.next()) {
             int editionId = resultSet.getInt(1);
             String editionTitle = resultSet.getString(2);
-            String category = resultSet.getString(3);
+            Category category = CategoryFactory.getCategory(resultSet.getString(3));
             Periodicity periodicity = PeriodicityFactory
                     .getPeriodicity(resultSet.getString(4));
             String description = resultSet.getString(5);
