@@ -1,5 +1,6 @@
 package services;
 
+import dtos.UserWithPassword;
 import models.User;
 import repositories.UserRepository;
 
@@ -24,5 +25,10 @@ public class UserService extends Service<User> {
     public User checkAuthorizationInfo(String email, String password) throws SQLException {
         return ((UserRepository)repository).
                 checkAuthorizationInfo(email, password);
+    }
+
+    public void add(UserWithPassword user) throws SQLException {
+        ((UserRepository)repository)
+                .add(user);
     }
 }

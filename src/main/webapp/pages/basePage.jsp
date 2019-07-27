@@ -35,7 +35,7 @@
         </c:when>
         <c:otherwise>
             <li><a href="/authorisation"><fmt:message key="label.mainMenu.signIn"/></a></li>
-            <li><a href="#"><fmt:message key="label.mainMenu.signUp"/> </a></li>
+            <li><a href="/registration"><fmt:message key="label.mainMenu.signUp"/> </a></li>
         </c:otherwise>
     </c:choose>
     <li>

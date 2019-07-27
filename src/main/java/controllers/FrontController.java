@@ -28,8 +28,14 @@ public class FrontController {
             case ("/adminEditions") : {
                 return AdminEditionsController.doGet(req);
             }
+            case ("/adminPayments") : {
+                return AdminPaymentsController.doGet(req);
+            }
             case ("/addEdition") : {
                 return AddEditionController.doGet(req);
+            }
+            case ("/registration") : {
+                return RegistrationController.doGet(req);
             }
         }
         return PageLocation.PAGE_NOT_FOUND;
@@ -50,6 +56,9 @@ public class FrontController {
             }
             case ("/adminEditions") : {
                 return AdminEditionsController.doPost(req, resp);
+            }
+            case ("/registration") : {
+                return RegistrationController.doPost(req, resp);
             }
         }
         return PageLocation.PAGE_NOT_FOUND;

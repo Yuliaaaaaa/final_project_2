@@ -20,7 +20,7 @@
     <title>UserInfo</title>
     <style>
         .sexPicture {
-            height: 250px;
+            height: 200px;
             display: inline-block;
         }
     </style>

@@ -113,4 +113,15 @@ public class PaymentDetailsRepository implements Repository<PaymentDetail> {
         }
         return paymentDetails;
     }
+
+    public List<PaymentDetail> getAllByPaymentId(int id) throws SQLException {
+        String sqlSelect = "SELECT * FROM `Payments details` WHERE payment_id = ?;";
+        Connection connection = ConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<PaymentDetail> items = getItems(resultSet);
+        connection.close();
+        return items;
+    }
 }

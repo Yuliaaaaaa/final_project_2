@@ -27,8 +27,8 @@
         <img style="position: relative" height="17px"
                 src="https://png2.kisspng.com/sh/ac958b1f951b567689686f98535bd33e/L0KzQYm3V8E2N6VmiJH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfVva5J1iAd1YYTodH73jCN1e5R3geJ9LXewg8bwlPUua51uRdNtbXnxPbrqjB4uPZM5edY5NkC8coK8UskvPWcATqICN0i0RYS4VsI6Pmc5TqUAMj7zfri=/kisspng-computer-icons-encapsulated-postscript-g-suite-cli-admin-icon-5b4ad0609b1529.5696077815316296646352.png">
     </a></li>
-    <li><a href="#"><fmt:message key="label.adminMenu.editions"/></a></li>
-    <li><a href="#"><fmt:message key="label.adminMenu.payments"/></a></li>
+    <li><a href="/adminEditions"><fmt:message key="label.adminMenu.editions"/></a></li>
+    <li><a href="/adminPayments"><fmt:message key="label.adminMenu.payments"/></a></li>
     <li><a href="/authorisation"><fmt:message key="label.mainMenu.signOut"/></a></li>
     <li>
         <form method="get">

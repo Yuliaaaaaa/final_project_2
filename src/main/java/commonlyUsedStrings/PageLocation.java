@@ -12,4 +12,6 @@ public class PageLocation {
     public static final String PAGE_NOT_FOUND = "errorPages/pageNotFound.jsp";
     public static final String SQL_EXCEPTION = "errorPages/SQLException.jsp";
     public static final String ADD_EDITION = "pages/addEdition.jsp";
+    public static final String ADMIN_PAYMENTS = "pages/adminPayments.jsp";
+    public static final String REGISTRATION_PAGE = "pages/registrationPage.jsp";
 }
