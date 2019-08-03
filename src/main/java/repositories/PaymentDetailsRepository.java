@@ -21,14 +21,23 @@ public class PaymentDetailsRepository implements Repository<PaymentDetail> {
      */
     @Override
     public void add(PaymentDetail item) throws SQLException {
+        Connection connection = ConnectionPool.getConnection();
+        add(item, connection);
+        connection.close();
+    }
+
+    /**
+     * @param item
+     * @param connection
+     * @throws SQLException
+     */
+    public void add(PaymentDetail item, Connection connection) throws SQLException {
         String sqlAdd = "INSERT INTO `Payments Details`(payment_id, subscription_id) " +
                 "VALUES (?, ?);";
-        Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setInt(1, item.getPaymentId());
         preparedStatement.setInt(2, item.getSubscriptionId());
         preparedStatement.execute();
-        connection.close();
     }
 
     /**

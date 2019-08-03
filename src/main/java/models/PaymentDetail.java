@@ -8,6 +8,7 @@ public class PaymentDetail {
     private int detailsId;
     private int paymentId;
     private int subscriptionId;
+    private Subscription subscription;
 
     /**
      * @return
@@ -49,5 +50,19 @@ public class PaymentDetail {
      */
     public void setSubscriptionId(int subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    /**
+     * @return
+     */
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    /**
+     * @param subscription
+     */
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }

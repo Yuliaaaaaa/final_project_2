@@ -18,15 +18,24 @@ public class PaymentRepository implements Repository<Payment> {
      */
     @Override
     public void add(Payment item) throws SQLException {
+        Connection connection = ConnectionPool.getConnection();
+        add(item, connection);
+        connection.close();
+    }
+
+    /**
+     * @param item
+     * @param connection
+     * @throws SQLException
+     */
+    public void add(Payment item, Connection connection) throws SQLException {
         String sqlAdd = "INSERT INTO Payments(user_id, payment_sum, payment_date) " +
                 "VALUES (?, ?, ?);";
-        Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setDouble(2, item.getPaymentSum());
         preparedStatement.setTimestamp(3, item.getPaymentDate());
         preparedStatement.execute();
-        connection.close();
     }
 
     /**
@@ -113,5 +122,18 @@ public class PaymentRepository implements Repository<Payment> {
             payments.add(payment);
         }
         return payments;
+    }
+
+    /**
+     * @param connection
+     * @return
+     * @throws SQLException
+     */
+    public Payment getLast(Connection connection) throws SQLException {
+        String sqlSelect = "SELECT * FROM payments WHERE payment_id = " +
+                "(SELECT MAX(payment_id) FROM payments);";
+        List<Payment> items = query(sqlSelect);
+        if(items.size() != 0) return items.get(0);
+        else return null;
     }
 }

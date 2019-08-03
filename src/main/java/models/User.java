@@ -3,7 +3,7 @@ package models;
 import java.util.Date;
 
 /**
- * @author Yuliia Shcherbakova ON 18.07.2019
+ * @author Yuliia Shcherbakova ON 19.07.2019
  * @project publishing
  */
 public class User {
@@ -14,6 +14,7 @@ public class User {
     private char sex;
     private Long phoneNumber;
     private String email;
+    private String password;
 
     /**
      * @param firstName
@@ -21,13 +22,15 @@ public class User {
      * @param birthDate
      * @param sex
      * @param email
+     * @param password
      */
-    public User(String firstName, String lastName, Date birthDate, char sex, String email) {
+    public User(String firstName, String lastName, Date birthDate, char sex, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.sex = sex;
         this.email = email;
+        this.password = password;
     }
 
     /**
@@ -132,5 +135,19 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

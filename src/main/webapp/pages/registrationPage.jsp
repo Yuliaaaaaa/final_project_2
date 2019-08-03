@@ -21,7 +21,7 @@
 <body>
 <div class="box">
     <h3><fmt:message key="label.mainMenu.signUp"/></h3>
-    <hr>
+    <hr align="left">
     <form method="post">
     <table>
         <tr>
@@ -76,7 +76,7 @@
         <c:if test="${emptyFields}">
         <p class="error"><fmt:message key="error.wrongInput.allFieldsRequired"/>
         </c:if>
-    <button class="btn" style="float: right; margin-right: 50px"><fmt:message key="label.mainMenu.signUp"/></button>
+    <button class="btn" style="float: right; margin-right: 100px"><fmt:message key="label.mainMenu.signUp"/></button>
     </form>
 </div>
 </body>

@@ -1,11 +1,11 @@
 package repositories;
 
 import jdbc.ConnectionPool;
+import models.Payment;
 import models.Subscription;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,9 +19,19 @@ public class SubscriptionRepository implements Repository<Subscription> {
      */
     @Override
     public void add(Subscription item) throws SQLException {
+        Connection connection = ConnectionPool.getConnection();
+        add(item, connection);
+        connection.close();
+    }
+
+    /**
+     * @param item
+     * @param connection
+     * @throws SQLException
+     */
+    public void add(Subscription item, Connection connection) throws SQLException {
         String sqlAdd = "INSERT INTO Subscriptions(user_id, edition_id, issues_quantity,order_date, is_paid) " +
                 "VALUES (?, ?, ?, ?, ?);";
-        Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setInt(2, item.getEditionId());
@@ -29,7 +39,6 @@ public class SubscriptionRepository implements Repository<Subscription> {
         preparedStatement.setTimestamp(4, item.getOrderDate());
         preparedStatement.setBoolean(5, item.isPaid());
         preparedStatement.execute();
-        connection.close();
     }
 
     /**
@@ -122,5 +131,18 @@ public class SubscriptionRepository implements Repository<Subscription> {
             subscriptions.add(subscription);
         }
         return subscriptions;
+    }
+
+    /**
+     * @param connection
+     * @return
+     * @throws SQLException
+     */
+    public Subscription getLast(Connection connection) throws SQLException {
+        String sqlSelect = "SELECT * FROM subscriptions WHERE subscription_id = " +
+                "(SELECT MAX(subscription_id) FROM subscriptions);";
+        List<Subscription> items = query(sqlSelect);
+        if(items.size() != 0) return items.get(0);
+        else return null;
     }
 }

@@ -92,7 +92,7 @@ public class EditionRepository implements Repository<Edition> {
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Edition> items = getItems(resultSet);
         connection.close();
-        if(items.size() != 0) return items.get(0);
+        if (items.size() != 0) return items.get(0);
         else return null;
     }
 
@@ -125,5 +125,24 @@ public class EditionRepository implements Repository<Edition> {
         }
         return editions;
     }
+
+    /**
+     * @param userId
+     * @return
+     * @throws SQLException
+     */
+    public List<Edition> getAllUnsubscribedEditions(int userId) throws SQLException {
+        String sqlSelect = "SELECT * FROM editions\n" +
+                "WHERE edition_id NOT IN\n" +
+                "(SELECT edition_id FROM subscriptions WHERE user_id = ?);";
+        Connection connection = ConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+        preparedStatement.setInt(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Edition> items = getItems(resultSet);
+        connection.close();
+        return items;
+    }
+
 
 }

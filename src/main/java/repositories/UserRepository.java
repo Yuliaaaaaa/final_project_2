@@ -1,9 +1,7 @@
 package repositories;
 
-import annotations.NonSecure;
-import dtos.UserWithPassword;
-import jdbc.ConnectionPool;
 import models.User;
+import jdbc.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,26 +22,7 @@ public class UserRepository implements Repository<User> {
      * @throws SQLException
      */
     @Override
-    @NonSecure
     public void add(User item) throws SQLException {
-        String sqlAdd = "INSERT INTO Users (first_name, last_name, birth_date, sex, phone_number,email,`password`) " +
-                "VALUES (?, ?, ?, ?, ?, ?, '');";
-        Connection connection = ConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
-        preparedStatement.setString(1, item.getFirstName());
-        preparedStatement.setString(2, item.getLastName());
-        preparedStatement.setDate(3, new java.sql.Date(item.getBirthDate().getTime()));
-        preparedStatement.setString(4, item.getSex()+"");
-        if(item.getPhoneNumber() != null)
-            preparedStatement.setLong(5, item.getPhoneNumber());
-        else
-            preparedStatement.setString(5,null);
-        preparedStatement.setString(6, item.getEmail());
-        preparedStatement.execute();
-        connection.close();
-    }
-
-    public void add(UserWithPassword item) throws SQLException {
         String sqlAdd = "INSERT INTO Users (first_name, last_name, birth_date, sex, phone_number,email,`password`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?);";
         Connection connection = ConnectionPool.getConnection();
@@ -145,6 +124,7 @@ public class UserRepository implements Repository<User> {
             char sex = resultSet.getString(5).charAt(0);
             Long phoneNumber = resultSet.getLong(6);
             String email = resultSet.getString(7);
+            String password = resultSet.getString(8);
 
             User user = new User();
             user.setUserId(userId);
@@ -154,6 +134,7 @@ public class UserRepository implements Repository<User> {
             user.setSex(sex);
             user.setPhoneNumber(phoneNumber);
             user.setEmail(email);
+            user.setPassword(password);
 
             users.add(user);
         }

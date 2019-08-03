@@ -17,10 +17,15 @@ import java.util.stream.Stream;
  * @author Yuliia Shcherbakova ON 25.07.2019
  * @project publishing
  */
-public class AdminEditionsController {
+public class AdminEditionsController implements GetMethodController, PostMethodController {
     private static final EditionService service = EditionService.getEditionService();
 
-    public static String doGet(HttpServletRequest req) throws SQLException {
+    /**
+     * @param req
+     * @return
+     * @throws SQLException
+     */
+    public String doGet(HttpServletRequest req) throws SQLException {
         req.getSession().setAttribute("admin", true);
         List<Edition> all = service.getAll();
         int startIndex = (int) req.getAttribute("startIndex");
@@ -34,7 +39,13 @@ public class AdminEditionsController {
     }
 
 
-    public static String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    /**
+     * @param req
+     * @param resp
+     * @return
+     * @throws SQLException
+     */
+    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         int id = Integer.valueOf(req.getParameter("id"));
         service.delete(id);
         req.setAttribute("deleted", true);

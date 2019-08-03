@@ -76,11 +76,11 @@ ul li.active a:after {
 }
 
 .box{
-    width: 510px;
+    width: 550px;
     height: 390px;
-    background-image: url("https://png2.kisspng.com/sh/b60f76c1c6bac7f05c4e13c0e6a1fc6f/L0KzQYm3UcI5N5DufZH0aYP2gLBuTgBieJZ3RetubHzyh37ujBxlNZRmitZrb3H1dH73ggBmel46eahtY0i1Q7aBVMM5OV83Sqc7MkO3RoK8UccyPGU1UasENUG3PsH1h5==/kisspng-paper-yellow-gold-cardboard-paper-5a6dc823e84381.2252234615171440999514.png");
-    background-size: 650px;
-    padding: 40px 70px;
+    background-image: url("https://png2.kisspng.com/sh/942d1872b9951f6f2b2def7989b147a1/L0KzQYm3U8I3N6lqj5H0aYP2gLBuTfFkcZUyfuRuZT3zccHskr1jfaRuhtd8cz3zgrr1lPlvb150hNY2cHHzdcO0VfFjQWY7UKU5M0e3R4m1WcExO2E4Uag6NUK1QIq8V8Q4OGI5SpD5bne=/kisspng-acid-free-paper-business-printing-old-paper-5ab95683037478.9103039615220957470142.png");
+    background-size: 700px;
+    padding: 40px 150px;
     margin: 20px 290px 0px;
     background-repeat: no-repeat;
     font-family: 'Bookman Old Style', sans-serif;
@@ -96,7 +96,7 @@ select#locale option[value="RU"] {
 }
 
 hr{
-    width: 500px;
+    width: 400px;
     position: relative;
 }
 
@@ -163,6 +163,7 @@ h3 {
     margin: auto;
     max-width: 600px;
     padding: 5px;
+    margin-left: -70px;
     width: 100%;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
     animation: float 5s infinite;

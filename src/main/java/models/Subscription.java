@@ -13,6 +13,7 @@ public class Subscription {
     private int issuesQuantity;
     private Timestamp orderDate;
     private boolean isPaid;
+    private Edition edition;
 
     /**
      * @param userId
@@ -115,5 +116,19 @@ public class Subscription {
      */
     public void setPaid(boolean paid) {
         this.isPaid = paid;
+    }
+
+    /**
+     * @return
+     */
+    public Edition getEdition() {
+        return edition;
+    }
+
+    /**
+     * @param edition
+     */
+    public void setEdition(Edition edition) {
+        this.edition = edition;
     }
 }

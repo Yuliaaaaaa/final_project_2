@@ -1,7 +1,7 @@
 package servlets;
 
 import commonlyUsedStrings.PageLocation;
-import controllers.FrontController;
+import factories.ControllerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -29,7 +29,7 @@ public class DispatcherServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page = null;
         try {
-            page = FrontController.doGet(req);
+            page = ControllerFactory.doGet(req);
         } catch (SQLException e) {
             page = PageLocation.SQL_EXCEPTION;
             logger.error("SQLException occurred!");
@@ -49,7 +49,7 @@ public class DispatcherServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page = null;
         try {
-            page = FrontController.doPost(req, resp);
+            page = ControllerFactory.doPost(req, resp);
         } catch (SQLException e) {
             page = PageLocation.SQL_EXCEPTION;
             logger.error("SQLException occurred!");

@@ -20,8 +20,8 @@
     <style>
         .form {
             height: 100px;
-            width: 500px;
-            padding: 30px 100px 100px;
+            width: 400px;
+            padding: 30px 55px 100px;
         }
     </style>
 </head>
@@ -38,8 +38,8 @@
                 <br>
             </td>
             <td style="float: left; padding: 0px">
-                    <input type="text" name="email"> <br><br>
-                    <input type="password" name="password"> <br>
+                    <input type="text" name="email"><br><br>
+                    <input type="password" name="password"><br>
             </td>
         </tr>
         <tr>

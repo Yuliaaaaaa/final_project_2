@@ -2,33 +2,41 @@ package controllers;
 
 import commonlyUsedStrings.AdminData;
 import commonlyUsedStrings.PageLocation;
-import models.Edition;
-import models.User;
+import facade.UserFacade;
+import dtos.SecureUser;
 import org.apache.log4j.Logger;
-import repositories.EditionRepository;
-import services.Service;
-import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * @author Yuliia Shcherbakova ON 22.07.2019
  * @project publishing
  */
-public class AuthorisationController {
-    private static UserService userService = UserService.getUserService();
+public class AuthorisationController implements GetMethodController, PostMethodController {
+    private static UserFacade userFacade = UserFacade.getUserFacade();
     private static Logger logger = Logger.getLogger(AuthorisationController.class);
 
-    public static String doGet(HttpServletRequest req) {
+    /**
+     * @param req
+     * @return
+     */
+    public String doGet(HttpServletRequest req) {
         req.getSession().removeAttribute("user");
         req.getSession().removeAttribute("admin");
         return PageLocation.AUTHORISATION_PAGE;
     }
-    public static String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+
+    /**
+     * @param req
+     * @param resp
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         if(email.isEmpty() || password.isEmpty()) {
@@ -39,7 +47,7 @@ public class AuthorisationController {
             resp.sendRedirect("/adminEditions");
             return null;
         }
-        User user = userService.checkAuthorizationInfo(email, password);
+        SecureUser user = userFacade.checkAuthorizationInfo(email, password);
         if(user != null){
             req.getSession()
                     .setAttribute("user", user);

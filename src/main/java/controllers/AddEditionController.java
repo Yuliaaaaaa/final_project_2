@@ -18,14 +18,25 @@ import java.sql.SQLException;
  * @author Yuliia Shcherbakova ON 25.07.2019
  * @project publishing
  */
-public class AddEditionController {
+public class AddEditionController implements GetMethodController, PostMethodController {
     private static final EditionService service = EditionService.getEditionService();
 
-    public static String doGet(HttpServletRequest req) {
+    /**
+     * @param req
+     * @return
+     */
+    public String doGet(HttpServletRequest req) {
         return PageLocation.ADD_EDITION;
     }
 
-    public static String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+    /**
+     * @param req
+     * @param resp
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String title = StringConverter.convertToUTF8(req.getParameter("title"));
         String category = req.getParameter("category");
         String periodicity = req.getParameter("periodicity");

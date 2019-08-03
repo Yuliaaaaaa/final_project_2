@@ -3,10 +3,10 @@ package dtos;
 import java.util.Date;
 
 /**
- * @author Yuliia Shcherbakova ON 19.07.2019
+ * @author Yuliia Shcherbakova ON 18.07.2019
  * @project publishing
  */
-public class UserWithPassword {
+public class SecureUser {
     private int userId;
     private String firstName;
     private String lastName;
@@ -14,7 +14,6 @@ public class UserWithPassword {
     private char sex;
     private Long phoneNumber;
     private String email;
-    private String password;
 
     /**
      * @param firstName
@@ -22,21 +21,19 @@ public class UserWithPassword {
      * @param birthDate
      * @param sex
      * @param email
-     * @param password
      */
-    public UserWithPassword(String firstName, String lastName, Date birthDate, char sex, String email, String password) {
+    public SecureUser(String firstName, String lastName, Date birthDate, char sex, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.sex = sex;
         this.email = email;
-        this.password = password;
     }
 
     /**
      *
      */
-    public UserWithPassword() {
+    public SecureUser() {
     }
 
     /**
@@ -135,19 +132,5 @@ public class UserWithPassword {
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * @return
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

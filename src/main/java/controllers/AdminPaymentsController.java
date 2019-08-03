@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServletRequest;
  * @author Yuliia Shcherbakova ON 26.07.2019
  * @project publishing
  */
-public class AdminPaymentsController {
+public class AdminPaymentsController implements GetMethodController {
     private static final PaymentService paymentService = PaymentService.getPaymentService();
 
-    public static String doGet(HttpServletRequest req) {
+    /**
+     * @param req
+     * @return
+     */
+    public String doGet(HttpServletRequest req) {
         return PageLocation.ADMIN_PAYMENTS;
     }
 }

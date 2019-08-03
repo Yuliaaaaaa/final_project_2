@@ -2,7 +2,6 @@ package controllers;
 
 import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
-import dtos.UserWithPassword;
 import models.User;
 import org.apache.log4j.Logger;
 import services.UserService;
@@ -13,8 +12,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,15 +20,26 @@ import java.util.regex.Pattern;
  * @author Yuliia Shcherbakova ON 26.07.2019
  * @project publishing
  */
-public class RegistrationController {
+public class RegistrationController implements GetMethodController, PostMethodController {
     private static final UserService service = UserService.getUserService();
     private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
-    public static String doGet(HttpServletRequest req) {
+    /**
+     * @param req
+     * @return
+     */
+    public String doGet(HttpServletRequest req) {
         return PageLocation.REGISTRATION_PAGE;
     }
 
-    public static String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+    /**
+     * @param req
+     * @param resp
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
+    public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String firstName = StringConverter.convertToUTF8(req.getParameter("firstName"));
         String lastName = StringConverter.convertToUTF8(req.getParameter("lastName"));
         String birth = req.getParameter("birthDate");
@@ -87,8 +95,8 @@ public class RegistrationController {
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        UserWithPassword user =
-                new UserWithPassword(firstName, lastName, birthDate, sex.charAt(0), email, password);
+        User user =
+                new User(firstName, lastName, birthDate, sex.charAt(0), email, password);
         if (!phoneNumber.isEmpty())
             user.setPhoneNumber(Long.getLong(phoneNumber));
         service.add(user);
@@ -96,6 +104,15 @@ public class RegistrationController {
         return null;
     }
 
+    /**
+     * @param req
+     * @param firstName
+     * @param lastName
+     * @param birth
+     * @param sex
+     * @param phoneNumber
+     * @param email
+     */
     private static void setAttributes(HttpServletRequest req, String firstName, String lastName, String birth, String sex, String phoneNumber, String email) {
         req.setAttribute("firstName", firstName);
         req.setAttribute("lastName", lastName);
