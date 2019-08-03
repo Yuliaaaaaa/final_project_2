@@ -44,6 +44,7 @@ public class AuthorisationController implements GetMethodController, PostMethodC
             return PageLocation.AUTHORISATION_PAGE;
         }
         if(email.equals(AdminData.getLogin()) && password.equals(AdminData.getPassword())){
+            req.getSession().setAttribute("admin", true);
             resp.sendRedirect("/adminEditions");
             return null;
         }

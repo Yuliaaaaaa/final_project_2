@@ -26,6 +26,9 @@ public class AddEditionController implements GetMethodController, PostMethodCont
      * @return
      */
     public String doGet(HttpServletRequest req) {
+        Object admin = req.getSession().getAttribute("admin");
+        if (admin == null)
+            return PageLocation.NOT_AUTHORISED;
         return PageLocation.ADD_EDITION;
     }
 

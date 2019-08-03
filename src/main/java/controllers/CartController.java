@@ -33,10 +33,10 @@ public class CartController implements GetMethodController, PostMethodController
      */
     public String doGet(HttpServletRequest req) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user != null) {
-            List<Subscription> subscriptionList = subscriptionService.getAllUnpaidForUser(user.getUserId());
-            req.setAttribute("subscriptions", subscriptionList);
-        }
+        if (user == null)
+            return PageLocation.NOT_AUTHORISED;
+        List<Subscription> subscriptionList = subscriptionService.getAllUnpaidForUser(user.getUserId());
+        req.setAttribute("subscriptions", subscriptionList);
         return PageLocation.CART_PAGE;
     }
 
@@ -52,7 +52,7 @@ public class CartController implements GetMethodController, PostMethodController
         String[] ticks = req.getParameterValues("tick");
         boolean pay = Boolean.parseBoolean(req.getParameter("pay"));
         boolean delete = Boolean.parseBoolean(req.getParameter("delete"));
-        if(delete) {
+        if (delete) {
             Arrays.stream(ticks).peek(idx -> {
                 int id = Integer.parseInt(idx);
                 try {
@@ -62,8 +62,7 @@ public class CartController implements GetMethodController, PostMethodController
                 }
             }).collect(Collectors.toList());
             req.setAttribute("deleted", true);
-        }
-        else if(pay) {
+        } else if (pay) {
             double sum = Double.parseDouble(req.getParameter("inputSum"));
             SecureUser user = (SecureUser) req.getSession().getAttribute("user");
             Payment payment = new Payment();

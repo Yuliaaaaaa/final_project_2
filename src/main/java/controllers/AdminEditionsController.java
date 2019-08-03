@@ -26,7 +26,9 @@ public class AdminEditionsController implements GetMethodController, PostMethodC
      * @throws SQLException
      */
     public String doGet(HttpServletRequest req) throws SQLException {
-        req.getSession().setAttribute("admin", true);
+        Object admin = req.getSession().getAttribute("admin");
+        if (admin == null)
+            return PageLocation.NOT_AUTHORISED;
         List<Edition> all = service.getAll();
         int startIndex = (int) req.getAttribute("startIndex");
         if (startIndex == 0)

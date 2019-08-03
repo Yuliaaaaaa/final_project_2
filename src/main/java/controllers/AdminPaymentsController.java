@@ -21,6 +21,9 @@ public class AdminPaymentsController implements GetMethodController {
      * @return
      */
     public String doGet(HttpServletRequest req) throws SQLException {
+        Object admin = req.getSession().getAttribute("admin");
+        if (admin == null)
+            return PageLocation.NOT_AUTHORISED;
         List<Payment> payments = paymentService.getAll();
         int startIndex = (int) req.getAttribute("startIndex");
         if (startIndex == 0)

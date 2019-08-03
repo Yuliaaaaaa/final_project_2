@@ -34,18 +34,17 @@ public class SubscribeController implements GetMethodController, PostMethodContr
      */
     public String doGet(HttpServletRequest req) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user != null){
-            List<Edition> unsubscribedEditions = editionService.getAllUnsubscribedEditions(user.getUserId());
-            int startIndex = (int) req.getAttribute("startIndex");
-            if (startIndex == 0)
-                req.setAttribute("start", true);
-            if(unsubscribedEditions.size() - startIndex <= 10)
-                req.setAttribute("end", true);
-            unsubscribedEditions = unsubscribedEditions.stream().skip(startIndex).limit(10).collect(Collectors.toList());
-            req.setAttribute("editions", unsubscribedEditions);
-            return PageLocation.SUBSCRIPTION_PAGE;
-        }
-        else return PageLocation.PAGE_NOT_FOUND;
+        if (user == null)
+            return PageLocation.NOT_AUTHORISED;
+        List<Edition> unsubscribedEditions = editionService.getAllUnsubscribedEditions(user.getUserId());
+        int startIndex = (int) req.getAttribute("startIndex");
+        if (startIndex == 0)
+            req.setAttribute("start", true);
+        if (unsubscribedEditions.size() - startIndex <= 10)
+            req.setAttribute("end", true);
+        unsubscribedEditions = unsubscribedEditions.stream().skip(startIndex).limit(10).collect(Collectors.toList());
+        req.setAttribute("editions", unsubscribedEditions);
+        return PageLocation.SUBSCRIPTION_PAGE;
     }
 
 
@@ -58,6 +57,8 @@ public class SubscribeController implements GetMethodController, PostMethodContr
      */
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
+        if (user == null)
+            return PageLocation.NOT_AUTHORISED;
         int id = Integer.parseInt(req.getParameter("id"));
         int issues = Integer.parseInt(req.getParameter("issues"));
         double sum = Double.parseDouble(req.getParameter("sum"));
@@ -66,7 +67,7 @@ public class SubscribeController implements GetMethodController, PostMethodContr
         subscription.setEditionId(id);
         subscription.setIssuesQuantity(issues);
         subscription.setUserId(user.getUserId());
-        if(pay){
+        if (pay) {
             Payment payment = new Payment();
             payment.setPaymentSum(sum);
             payment.setUserId(user.getUserId());
@@ -74,7 +75,7 @@ public class SubscribeController implements GetMethodController, PostMethodContr
             req.setAttribute("paid", true);
         }
         boolean cart = Boolean.parseBoolean(req.getParameter("cart"));
-        if(cart){
+        if (cart) {
             subscription.setPaid(false);
             subscriptionService.add(subscription);
             req.setAttribute("addedToCart", true);
