@@ -6,6 +6,7 @@ import models.Subscription;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setInt(2, item.getEditionId());
         preparedStatement.setInt(3, item.getIssuesQuantity());
-        preparedStatement.setTimestamp(4, item.getOrderDate());
+        preparedStatement.setTimestamp(4, item.getOrderDate(), Calendar.getInstance());
         preparedStatement.setBoolean(5, item.isPaid());
         preparedStatement.execute();
     }
@@ -61,19 +62,21 @@ public class SubscriptionRepository implements Repository<Subscription> {
      */
     @Override
     public void update(Subscription item) throws SQLException {
-        String sqlUpdate = "UPDATE Subscriptions " +
-                "SET user_id = ?, edition_id = ?, issues_quantity = ?, order_date = ?, is_paid = ? " +
-                "WHERE subscription_id = ?;";
         Connection connection = ConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
-        preparedStatement.setInt(1, item.getUserId());
-        preparedStatement.setInt(2, item.getEditionId());
-        preparedStatement.setInt(3, item.getIssuesQuantity());
-        preparedStatement.setTimestamp(4, item.getOrderDate());
-        preparedStatement.setBoolean(5, item.isPaid());
-        preparedStatement.setInt(6, item.getSubscriptionId());
-        preparedStatement.execute();
+        update(item, connection);
         connection.close();
+    }
+
+    public void update(Subscription item, Connection connection) throws SQLException {
+        String sqlUpdate = "UPDATE Subscriptions " +
+                "SET issues_quantity = ?, order_date = ?, is_paid = ? " +
+                "WHERE subscription_id = ?;";
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+        preparedStatement.setInt(1, item.getIssuesQuantity());
+        preparedStatement.setTimestamp(2, item.getOrderDate(), Calendar.getInstance());
+        preparedStatement.setBoolean(3, item.isPaid());
+        preparedStatement.setInt(4, item.getSubscriptionId());
+        preparedStatement.execute();
     }
 
     /**
@@ -117,7 +120,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
             int userId = resultSet.getInt(2);
             int editionId = resultSet.getInt(3);
             int issuesQuantity = resultSet.getInt(4);
-            Timestamp orderDate = resultSet.getTimestamp(5);
+            Timestamp orderDate = resultSet.getTimestamp(5, Calendar.getInstance());
             boolean isPaid = resultSet.getBoolean(6);
 
             Subscription subscription = new Subscription();
@@ -145,4 +148,16 @@ public class SubscriptionRepository implements Repository<Subscription> {
         if(items.size() != 0) return items.get(0);
         else return null;
     }
+
+    public List<Subscription> getAllUnpaidForUser(int userId) throws SQLException {
+        String sqlSelect = "SELECT * FROM Subscriptions WHERE user_id = ? AND is_paid = 0;";
+        Connection connection = ConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+        preparedStatement.setInt(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Subscription> items = getItems(resultSet);
+        connection.close();
+        return items;
+    }
+
 }

@@ -5,6 +5,7 @@ import models.Payment;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class PaymentRepository implements Repository<Payment> {
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setDouble(2, item.getPaymentSum());
-        preparedStatement.setTimestamp(3, item.getPaymentDate());
+        preparedStatement.setTimestamp(3, item.getPaymentDate(), Calendar.getInstance());
         preparedStatement.execute();
     }
 
@@ -65,7 +66,7 @@ public class PaymentRepository implements Repository<Payment> {
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setDouble(2, item.getPaymentSum());
-        preparedStatement.setTimestamp(3, item.getPaymentDate());
+        preparedStatement.setTimestamp(3, item.getPaymentDate(), Calendar.getInstance());
         preparedStatement.setInt(4, item.getPaymentId());
         preparedStatement.execute();
         connection.close();
@@ -111,7 +112,7 @@ public class PaymentRepository implements Repository<Payment> {
             int paymentId = resultSet.getInt(1);
             int userId = resultSet.getInt(2);
             double paymentSum = resultSet.getDouble(3);
-            Timestamp paymentDate = resultSet.getTimestamp(4);
+            Timestamp paymentDate = resultSet.getTimestamp(4, Calendar.getInstance());
 
             Payment payment = new Payment();
             payment.setPaymentId(paymentId);

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,10 +41,10 @@ public class PaymentTransaction {
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             connection.setSavepoint();
             subscription.setPaid(true);
-            Instant now = Instant.now();
-            subscription.setOrderDate(Timestamp.from(now));
+            long now = new Date().getTime();
+            subscription.setOrderDate(new Timestamp(now));
             subscriptionRepository.add(subscription, connection);
-            payment.setPaymentDate(Timestamp.from(now));
+            payment.setPaymentDate(new Timestamp(now));
             paymentRepository.add(payment, connection);
             connection.commit();
             PaymentDetail paymentDetail = new PaymentDetail();
@@ -58,7 +59,50 @@ public class PaymentTransaction {
             logger.error("Immediate pay transaction fail!");
             throw e;
         }
-        //connection.close();
+        connection.close();
+    }
+
+    public void payFromCart(List<Subscription> subscriptions, Payment payment) throws SQLException {
+        Connection connection = ConnectionPool.getConnection();
+        try {
+            logger.info("Pay transaction started!");
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            connection.setSavepoint();
+            long now = new Date().getTime();
+            payment.setPaymentDate(new Timestamp(now));
+            paymentRepository.add(payment, connection);
+            connection.commit();
+            int paymentId = paymentRepository.getLast(connection).getPaymentId();
+            subscriptions.stream()
+                    .forEach(subscription -> {
+                        subscription.setPaid(true);
+                        subscription.setOrderDate(new Timestamp(now));
+                        try {
+                        subscriptionRepository.update(subscription, connection);
+                            PaymentDetail paymentDetail = new PaymentDetail();
+                            paymentDetail.setSubscriptionId(subscription.getSubscriptionId());
+                            paymentDetail.setPaymentId(paymentId);
+                            paymentDetailsRepository.add(paymentDetail, connection);
+                        } catch (SQLException e) {
+                            try {
+                                connection.rollback();
+                                connection.setAutoCommit(true);
+                            } catch (SQLException ex) {
+                                logger.error("Rolling back failed!");
+                            }
+                            logger.error("Payment Detail was not added");
+                        }
+                    });
+            connection.commit();
+            logger.info("Pay transaction success!");
+        } catch (SQLException e) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            logger.error("Pay transaction fail!");
+            throw e;
+        }
+        connection.close();
     }
 
 }

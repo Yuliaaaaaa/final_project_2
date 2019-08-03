@@ -15,5 +15,5 @@ public class PageLocation {
     public static final String ADMIN_PAYMENTS = "pages/adminPayments.jsp";
     public static final String REGISTRATION_PAGE = "pages/registrationPage.jsp";
     public static final String SUBSCRIPTION_PAGE = "pages/subscriptionPage.jsp";
-
+    public static final String CART_PAGE = "pages/cart.jsp";
 }
