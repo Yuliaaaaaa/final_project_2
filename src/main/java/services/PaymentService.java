@@ -1,5 +1,6 @@
 package services;
 
+import facade.UserFacade;
 import models.Payment;
 import org.apache.log4j.Logger;
 import repositories.PaymentDetailsRepository;
@@ -38,14 +39,19 @@ public class PaymentService extends Service<Payment> {
     @Override
     public List<Payment> getAll() throws SQLException {
         PaymentDetailsService paymentDetailsService = PaymentDetailsService.getPaymentDetailsService();
+        UserFacade userFacade = UserFacade.getUserFacade();
         return super.getAll()
                 .stream()
                 .peek(payment -> {
+                    int paymentId = payment.getPaymentId();
                     try {
                         payment.setPaymentDetails(paymentDetailsService
-                                .getAllByPaymentId(payment.getPaymentId()));
+                                .getAllByPaymentId(paymentId));
+                        int userId = payment.getUserId();
+                        payment.setUser(userFacade.
+                                getOneById(userId));
                     } catch (SQLException e) {
-                        logger.error("Could not get payment delails for payment with id " + payment.getPaymentId());
+                        logger.error("Could not get payment delails for payment with id " + paymentId);
                     }
                 }).collect(Collectors.toList());
     }

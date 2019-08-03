@@ -1,5 +1,7 @@
 package models;
 
+import dtos.SecureUser;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Payment {
     private double paymentSum;
     private Timestamp paymentDate;
     private List<PaymentDetail> paymentDetails;
+    private SecureUser user;
 
     /**
      * @param userId
@@ -101,4 +104,19 @@ public class Payment {
     public void setPaymentDetails(List<PaymentDetail> paymentDetails) {
         this.paymentDetails = paymentDetails;
     }
+
+    /**
+     * @return
+     */
+    public SecureUser getUser() {
+        return user;
+    }
+
+    /**
+     * @param user
+     */
+    public void setUser(SecureUser user) {
+        this.user = user;
+    }
+
 }

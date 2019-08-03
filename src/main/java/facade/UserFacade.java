@@ -38,4 +38,9 @@ public class UserFacade {
         return getSecureUserDto(user);
     }
 
+    public SecureUser getOneById(int id) throws SQLException {
+        User user = userService.getOneById(id);
+        return getSecureUserDto(user);
+    }
+
 }

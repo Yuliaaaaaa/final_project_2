@@ -51,4 +51,8 @@
     <filter-name>PaginationFilter</filter-name>
     <url-pattern>/subscribe</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+    <filter-name>PaginationFilter</filter-name>
+    <url-pattern>/adminPayments</url-pattern>
+  </filter-mapping>
 </web-app>

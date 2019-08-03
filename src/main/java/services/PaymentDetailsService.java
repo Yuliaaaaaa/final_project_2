@@ -1,11 +1,13 @@
 package services;
 
 import models.PaymentDetail;
+import models.Subscription;
 import org.apache.log4j.Logger;
 import repositories.PaymentDetailsRepository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yuliia Shcherbakova ON 03.08.2019
@@ -37,15 +39,16 @@ public class PaymentDetailsService extends Service<PaymentDetail> {
         SubscriptionService subscriptionService = SubscriptionService.getSubscriptionService();
         List<PaymentDetail> paymentDetails = ((PaymentDetailsRepository) repository)
                 .getAllByPaymentId(paymentId);
-        paymentDetails.stream()
+        return paymentDetails.stream()
                 .peek(paymentDetail -> {
                     try {
-                        paymentDetail.setSubscription(subscriptionService
-                                .getOneById(paymentDetail.getSubscriptionId()));
+                        int subscriptionId = paymentDetail.getSubscriptionId();
+                        Subscription oneById = subscriptionService
+                                .getOneById(subscriptionId);
+                        paymentDetail.setSubscription(oneById);
                     } catch (SQLException e) {
                         logger.error("Could not get subscription for payment detail " + paymentDetail.getDetailsId());
                     }
-                });
-        return paymentDetails;
+                }).collect(Collectors.toList());
     }
 }
