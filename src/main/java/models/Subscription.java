@@ -11,7 +11,8 @@ public class Subscription {
     private int userId;
     private int editionId;
     private int issuesQuantity;
-    private Timestamp orderDate;
+    private Timestamp startDate;
+    private Timestamp expireDate;
     private boolean isPaid;
     private Edition edition;
 
@@ -93,15 +94,29 @@ public class Subscription {
     /**
      * @return
      */
-    public Timestamp getOrderDate() {
-        return orderDate;
+    public Timestamp getStartDate() {
+        return startDate;
     }
 
     /**
-     * @param orderDate
+     * @param startDate
      */
-    public void setOrderDate(Timestamp orderDate) {
-        this.orderDate = orderDate;
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return
+     */
+    public Timestamp getExpireDate() {
+        return expireDate;
+    }
+
+    /**
+     * @param expireDate
+     */
+    public void setExpireDate(Timestamp expireDate) {
+        this.expireDate = expireDate;
     }
 
     /**

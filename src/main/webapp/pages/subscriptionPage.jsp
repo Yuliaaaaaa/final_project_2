@@ -46,6 +46,7 @@
         </li>
         <c:forEach items="${editions}" var="edition" varStatus="loop">
             <form method="post">
+                <input type="hidden" name="periodicity"  value="${edition.getPeriodicity()}">
             <input type="hidden" name="id" value="${edition.getEditionId()}">
             <li onclick="openMenu(${loop.index})">
                 <div class="col" style="width: 40%">${edition.getEditionTitle()}</div>

@@ -1,5 +1,8 @@
 package transactions;
 
+import enums.Periodicity;
+import factories.DateFactory;
+import factories.PeriodicityFactory;
 import jdbc.ConnectionPool;
 import models.Payment;
 import models.PaymentDetail;
@@ -12,7 +15,6 @@ import repositories.SubscriptionRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -40,17 +42,16 @@ public class PaymentTransaction {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             connection.setSavepoint();
-            subscription.setPaid(true);
             long now = new Date().getTime();
-            subscription.setOrderDate(new Timestamp(now));
+            Timestamp startDate = new Timestamp(now);
+            subscriptionPreparing(startDate, subscription);
             subscriptionRepository.add(subscription, connection);
-            payment.setPaymentDate(new Timestamp(now));
+            payment.setPaymentDate(startDate);
             paymentRepository.add(payment, connection);
             connection.commit();
-            PaymentDetail paymentDetail = new PaymentDetail();
-            paymentDetail.setSubscriptionId(subscriptionRepository.getLast(connection).getSubscriptionId());
-            paymentDetail.setPaymentId(paymentRepository.getLast(connection).getPaymentId());
-            paymentDetailsRepository.add(paymentDetail, connection);
+            int paymentId = paymentRepository.getLast(connection).getPaymentId();
+            int subscriptionId = subscriptionRepository.getLast(connection).getSubscriptionId();
+            addPaymentDetail(connection, paymentId, subscriptionId);
             connection.commit();
             logger.info("Immediate pay transaction success!");
         } catch (SQLException e) {
@@ -70,20 +71,18 @@ public class PaymentTransaction {
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             connection.setSavepoint();
             long now = new Date().getTime();
-            payment.setPaymentDate(new Timestamp(now));
+            Timestamp startDate = new Timestamp(now);
+            payment.setPaymentDate(startDate);
             paymentRepository.add(payment, connection);
             connection.commit();
             int paymentId = paymentRepository.getLast(connection).getPaymentId();
             subscriptions.stream()
                     .forEach(subscription -> {
-                        subscription.setPaid(true);
-                        subscription.setOrderDate(new Timestamp(now));
+                        subscriptionPreparing(startDate, subscription);
                         try {
                         subscriptionRepository.update(subscription, connection);
-                            PaymentDetail paymentDetail = new PaymentDetail();
-                            paymentDetail.setSubscriptionId(subscription.getSubscriptionId());
-                            paymentDetail.setPaymentId(paymentId);
-                            paymentDetailsRepository.add(paymentDetail, connection);
+                            int subscriptionId = subscription.getSubscriptionId();
+                            addPaymentDetail(connection, paymentId, subscriptionId);
                         } catch (SQLException e) {
                             try {
                                 connection.rollback();
@@ -103,6 +102,33 @@ public class PaymentTransaction {
             throw e;
         }
         connection.close();
+    }
+
+    /**
+     * @param connection
+     * @param paymentId
+     * @param subscriptionId
+     * @throws SQLException
+     */
+    private void addPaymentDetail(Connection connection, int paymentId, int subscriptionId) throws SQLException {
+        PaymentDetail paymentDetail = new PaymentDetail();
+        paymentDetail.setSubscriptionId(subscriptionId);
+        paymentDetail.setPaymentId(paymentId);
+        paymentDetailsRepository.add(paymentDetail, connection);
+    }
+
+    /**
+     * @param startDate
+     * @param subscription
+     */
+    private void subscriptionPreparing(Timestamp startDate, Subscription subscription) {
+        subscription.setPaid(true);
+        subscription.setStartDate(startDate);
+        int issuesQuantity = subscription.getIssuesQuantity();
+        Periodicity periodicity = PeriodicityFactory.
+                getPeriodicity(subscription.getEdition().getPeriodicity());
+        subscription.setExpireDate(DateFactory
+                .getExpiredDate(startDate, periodicity, issuesQuantity));
     }
 
 }

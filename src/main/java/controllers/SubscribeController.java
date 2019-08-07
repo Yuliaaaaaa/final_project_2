@@ -1,6 +1,7 @@
 package controllers;
 
 import commonlyUsedStrings.PageLocation;
+import factories.PeriodicityFactory;
 import models.Edition;
 import dtos.SecureUser;
 import models.Payment;
@@ -63,10 +64,14 @@ public class SubscribeController implements GetMethodController, PostMethodContr
         int issues = Integer.parseInt(req.getParameter("issues"));
         double sum = Double.parseDouble(req.getParameter("sum"));
         boolean pay = Boolean.parseBoolean(req.getParameter("pay"));
+        String periodicity = req.getParameter("periodicity");
+        Edition edition = new Edition();
+        edition.setPeriodicity(PeriodicityFactory.getPeriodicity(periodicity));
         Subscription subscription = new Subscription();
         subscription.setEditionId(id);
         subscription.setIssuesQuantity(issues);
         subscription.setUserId(user.getUserId());
+        subscription.setEdition(edition);
         if (pay) {
             Payment payment = new Payment();
             payment.setPaymentSum(sum);

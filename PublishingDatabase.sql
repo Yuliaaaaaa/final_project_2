@@ -53,7 +53,8 @@ subscription_id int AUTO_INCREMENT NOT NULL,
 user_id int NOT NULL,
 edition_id int NOT NULL,
 issues_quantity int NOT NULL,
-order_date datetime,
+start_date datetime,
+expire_date datetime,
 is_paid bit NOT NULL,
 
 PRIMARY KEY(subscription_id),
@@ -76,7 +77,7 @@ INDEX(user_id)
 
 CREATE TABLE `Payments Details`(
 details_id int AUTO_INCREMENT NOT NULL,
-payment_id int NOT NULL, 
+payment_id int NOT NULL,
 subscription_id int NOT NULL,
 PRIMARY KEY(details_id),
 FOREIGN KEY(payment_id) REFERENCES Payments(payment_id)
@@ -100,12 +101,12 @@ VALUES ('Сканворды', 'mind-breaker', 'weekly', '100 сканвордо�
 ('Vogue', 'fashion', 'monthly', 'Popular magazine about fashion', 30.00),
 ('Zhytomyr daily', 'newspaper', 'daily', 'Newspaper about life in Zhytomyr', 3.00);
 
-INSERT INTO Subscriptions(user_id, edition_id, issues_quantity,order_date, is_paid)
-VALUES (1, 1, 5, Timestamp("2019-07-09", "07:33:53"), 1),
-(2, 2, 3, Timestamp("2019-07-13", "13:40:07"), 1),
-(3, 3, 5, Timestamp("2019-07-17", "23:01:30"), 1),
-(2, 1, 7, NULL, 0),
-(2, 4, 10, NULL, 0);
+INSERT INTO Subscriptions(user_id, edition_id, issues_quantity, start_date, expire_date, is_paid)
+VALUES (1, 1, 5, Timestamp("2019-07-11", "07:33:53"),  Timestamp("2019-08-15", "07:33:53"), 1),
+(2, 2, 3, Timestamp("2019-07-13", "13:40:07"), Timestamp("2019-10-13", "13:40:07"), 1),
+(3, 4, 5, Timestamp("2019-08-08", "23:01:30"), Timestamp("2019-08-13", "23:01:30"), 1),
+(2, 1, 7, NULL, NULL, 0),
+(2, 4, 10, NULL, NULL, 0);
 
 INSERT INTO Payments(user_id, payment_sum, payment_date)
 VALUES (1, 25.00, Timestamp("2019-07-09", "07:33:53")),

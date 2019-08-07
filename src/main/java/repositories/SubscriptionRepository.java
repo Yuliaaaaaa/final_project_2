@@ -1,7 +1,6 @@
 package repositories;
 
 import jdbc.ConnectionPool;
-import models.Payment;
 import models.Subscription;
 
 import java.sql.*;
@@ -31,14 +30,15 @@ public class SubscriptionRepository implements Repository<Subscription> {
      * @throws SQLException
      */
     public void add(Subscription item, Connection connection) throws SQLException {
-        String sqlAdd = "INSERT INTO Subscriptions(user_id, edition_id, issues_quantity,order_date, is_paid) " +
-                "VALUES (?, ?, ?, ?, ?);";
+        String sqlAdd = "INSERT INTO Subscriptions(user_id, edition_id, issues_quantity, start_date, expire_date, is_paid) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setInt(2, item.getEditionId());
         preparedStatement.setInt(3, item.getIssuesQuantity());
-        preparedStatement.setTimestamp(4, item.getOrderDate(), Calendar.getInstance());
-        preparedStatement.setBoolean(5, item.isPaid());
+        preparedStatement.setTimestamp(4, item.getStartDate(), Calendar.getInstance());
+        preparedStatement.setTimestamp(5, item.getExpireDate(), Calendar.getInstance());
+        preparedStatement.setBoolean(6, item.isPaid());
         preparedStatement.execute();
     }
 
@@ -69,13 +69,14 @@ public class SubscriptionRepository implements Repository<Subscription> {
 
     public void update(Subscription item, Connection connection) throws SQLException {
         String sqlUpdate = "UPDATE Subscriptions " +
-                "SET issues_quantity = ?, order_date = ?, is_paid = ? " +
+                "SET issues_quantity = ?, start_date = ?, expire_date = ?, is_paid = ? " +
                 "WHERE subscription_id = ?;";
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setInt(1, item.getIssuesQuantity());
-        preparedStatement.setTimestamp(2, item.getOrderDate(), Calendar.getInstance());
-        preparedStatement.setBoolean(3, item.isPaid());
-        preparedStatement.setInt(4, item.getSubscriptionId());
+        preparedStatement.setTimestamp(2, item.getStartDate(), Calendar.getInstance());
+        preparedStatement.setTimestamp(3, item.getExpireDate(), Calendar.getInstance());
+        preparedStatement.setBoolean(4, item.isPaid());
+        preparedStatement.setInt(5, item.getSubscriptionId());
         preparedStatement.execute();
     }
 
@@ -120,15 +121,17 @@ public class SubscriptionRepository implements Repository<Subscription> {
             int userId = resultSet.getInt(2);
             int editionId = resultSet.getInt(3);
             int issuesQuantity = resultSet.getInt(4);
-            Timestamp orderDate = resultSet.getTimestamp(5, Calendar.getInstance());
-            boolean isPaid = resultSet.getBoolean(6);
+            Timestamp startDate = resultSet.getTimestamp(5, Calendar.getInstance());
+            Timestamp expireDate = resultSet.getTimestamp(6, Calendar.getInstance());
+            boolean isPaid = resultSet.getBoolean(7);
 
             Subscription subscription = new Subscription();
             subscription.setSubscriptionId(subscriptionId);
             subscription.setUserId(userId);
             subscription.setEditionId(editionId);
             subscription.setIssuesQuantity(issuesQuantity);
-            subscription.setOrderDate(orderDate);
+            subscription.setStartDate(startDate);
+            subscription.setExpireDate(expireDate);
             subscription.setPaid(isPaid);
 
             subscriptions.add(subscription);
