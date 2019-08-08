@@ -132,9 +132,9 @@ public class EditionRepository implements Repository<Edition> {
      * @throws SQLException
      */
     public List<Edition> getAllUnsubscribedEditions(int userId) throws SQLException {
-        String sqlSelect = "SELECT * FROM editions\n" +
-                "WHERE edition_id NOT IN\n" +
-                "(SELECT edition_id FROM subscriptions WHERE user_id = ?);";
+        String sqlSelect = "SELECT * FROM editions " +
+                "WHERE edition_id NOT IN " +
+                "(SELECT edition_id FROM subscriptions WHERE user_id = ? AND expire_date > CURDATE());";
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, userId);

@@ -80,7 +80,7 @@ public class PaymentTransaction {
                     .forEach(subscription -> {
                         subscriptionPreparing(startDate, subscription);
                         try {
-                        subscriptionRepository.update(subscription, connection);
+                            subscriptionRepository.update(subscription, connection);
                             int subscriptionId = subscription.getSubscriptionId();
                             addPaymentDetail(connection, paymentId, subscriptionId);
                         } catch (SQLException e) {
@@ -123,7 +123,10 @@ public class PaymentTransaction {
      */
     private void subscriptionPreparing(Timestamp startDate, Subscription subscription) {
         subscription.setPaid(true);
-        subscription.setStartDate(startDate);
+        if (subscription.getStartDate() == null)
+            subscription.setStartDate(startDate);
+        else
+            startDate = subscription.getStartDate();
         int issuesQuantity = subscription.getIssuesQuantity();
         Periodicity periodicity = PeriodicityFactory.
                 getPeriodicity(subscription.getEdition().getPeriodicity());

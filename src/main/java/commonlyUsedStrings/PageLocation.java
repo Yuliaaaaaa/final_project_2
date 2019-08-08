@@ -17,4 +17,5 @@ public class PageLocation {
     public static final String REGISTRATION_PAGE = "pages/registrationPage.jsp";
     public static final String SUBSCRIPTION_PAGE = "pages/subscriptionPage.jsp";
     public static final String CART_PAGE = "pages/cart.jsp";
+    public static final String MY_SUBSCRIPTIONS_PAGE = "pages/mySubscriptionsPage.jsp";
 }

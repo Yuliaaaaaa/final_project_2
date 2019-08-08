@@ -22,6 +22,8 @@ public class UserFacade {
     }
 
     private SecureUser getSecureUserDto(User user) {
+        if(user == null)
+            return null;
         SecureUser secureUser = new SecureUser();
         secureUser.setUserId(user.getUserId());
         secureUser.setFirstName(user.getFirstName());

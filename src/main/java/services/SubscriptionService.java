@@ -50,6 +50,14 @@ public class SubscriptionService extends Service<Subscription> {
     public List<Subscription> getAllUnpaidForUser(int userId) throws SQLException {
         List<Subscription> subscriptions = ((SubscriptionRepository) repository)
                 .getAllUnpaidForUser(userId);
+        return getSubscriptionsWithEditions(subscriptions);
+    }
+
+    /**
+     * @param subscriptions
+     * @return
+     */
+    private List<Subscription> getSubscriptionsWithEditions(List<Subscription> subscriptions) {
         return subscriptions.stream()
                 .peek(subscription -> {
                     try {
@@ -60,4 +68,15 @@ public class SubscriptionService extends Service<Subscription> {
                 })
                 .collect(Collectors.toList());
     }
+
+    /**
+     * @param userId
+     * @return
+     */
+    public List<Subscription> getAllPaidForUser(int userId) throws SQLException {
+        List<Subscription> subscriptions = ((SubscriptionRepository) repository)
+                .getAllPaidForUser(userId);
+        return getSubscriptionsWithEditions(subscriptions);
+    }
+
 }

@@ -60,31 +60,40 @@ public class SubscribeController implements GetMethodController, PostMethodContr
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
         if (user == null)
             return PageLocation.NOT_AUTHORISED;
-        int id = Integer.parseInt(req.getParameter("id"));
-        int issues = Integer.parseInt(req.getParameter("issues"));
+        String issues = req.getParameter("issues");
+        if (issues.isEmpty()){
+            req.setAttribute("notSelected", true);
+            return doGet(req);
+        }
+        int userId = user.getUserId();
+        int editionId = Integer.parseInt(req.getParameter("editionId"));
+        int issuesQuantity = Integer.parseInt(issues);
         double sum = Double.parseDouble(req.getParameter("sum"));
         boolean pay = Boolean.parseBoolean(req.getParameter("pay"));
         String periodicity = req.getParameter("periodicity");
-        Edition edition = new Edition();
-        edition.setPeriodicity(PeriodicityFactory.getPeriodicity(periodicity));
-        Subscription subscription = new Subscription();
-        subscription.setEditionId(id);
-        subscription.setIssuesQuantity(issues);
-        subscription.setUserId(user.getUserId());
-        subscription.setEdition(edition);
+        Subscription subscription = Subscription.getSubscription(userId, editionId, issuesQuantity, periodicity);
         if (pay) {
-            Payment payment = new Payment();
-            payment.setPaymentSum(sum);
-            payment.setUserId(user.getUserId());
-            paymentTransactionService.payImmediately(subscription, payment);
+            pay(userId, subscription, sum);
             req.setAttribute("paid", true);
         }
         boolean cart = Boolean.parseBoolean(req.getParameter("cart"));
         if (cart) {
-            subscription.setPaid(false);
-            subscriptionService.add(subscription);
+            addToCart(subscription);
             req.setAttribute("addedToCart", true);
         }
         return doGet(req);
     }
+
+    public static void addToCart(Subscription subscription) throws SQLException {
+        subscription.setPaid(false);
+        subscriptionService.add(subscription);
+    }
+
+    public static void pay(int userId, Subscription subscription, double sum) throws SQLException {
+        Payment payment = new Payment();
+        payment.setPaymentSum(sum);
+        payment.setUserId(userId);
+        paymentTransactionService.payImmediately(subscription, payment);
+    }
+
 }

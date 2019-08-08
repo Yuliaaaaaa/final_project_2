@@ -11,3 +11,9 @@ function openMenu(id) {
 function closeItem(value, index, ar) {
     document.getElementsByName('details').item(index).style.display = 'none';
 }
+function countSum(idx) {
+    var price = this.document.getElementsByName("price").item(idx).value;
+    var issues = this.document.getElementsByName("issues").item(idx).value;
+    this.document.getElementsByName("disabledSum").item(idx).value = price*issues;
+    this.document.getElementsByName("sum").item(idx).value = price*issues;
+}

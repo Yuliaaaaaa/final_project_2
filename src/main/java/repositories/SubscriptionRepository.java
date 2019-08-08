@@ -154,6 +154,22 @@ public class SubscriptionRepository implements Repository<Subscription> {
 
     public List<Subscription> getAllUnpaidForUser(int userId) throws SQLException {
         String sqlSelect = "SELECT * FROM Subscriptions WHERE user_id = ? AND is_paid = 0;";
+        return getItemsForUser(userId, sqlSelect);
+    }
+
+    /**
+     * @param userId
+     * @return
+     */
+    public List<Subscription> getAllPaidForUser(int userId) throws SQLException {
+        String sqlSelect = "SELECT subscription_id, user_id, edition_id,  SUM(issues_quantity), " +
+                "MIN(start_date), MAX(expire_date), is_paid " +
+                "FROM Subscriptions WHERE user_id = ? AND is_paid = 1 AND expire_date > CURDATE() " +
+                "GROUP BY edition_id ;";
+        return getItemsForUser(userId, sqlSelect);
+    }
+
+    private List<Subscription> getItemsForUser(int userId, String sqlSelect) throws SQLException {
         Connection connection = ConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, userId);
@@ -162,5 +178,4 @@ public class SubscriptionRepository implements Repository<Subscription> {
         connection.close();
         return items;
     }
-
 }

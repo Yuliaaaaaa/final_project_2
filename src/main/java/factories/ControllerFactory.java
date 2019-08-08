@@ -53,6 +53,10 @@ public class ControllerFactory {
                 controller = new CartController();
                 break;
             }
+            case ("/mySubscriptions") : {
+                controller = new MySubscriptionsController();
+                break;
+            }
         }
         return (controller != null) ? controller.doGet(req) : PageLocation.PAGE_NOT_FOUND;
     }
@@ -87,6 +91,10 @@ public class ControllerFactory {
             }
             case ("/cart") : {
                 controller = new CartController();
+                break;
+            }
+            case ("/mySubscriptions") : {
+                controller = new MySubscriptionsController();
                 break;
             }
         }

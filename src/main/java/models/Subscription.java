@@ -1,5 +1,7 @@
 package models;
 
+import factories.PeriodicityFactory;
+
 import java.sql.Timestamp;
 
 /**
@@ -145,5 +147,23 @@ public class Subscription {
      */
     public void setEdition(Edition edition) {
         this.edition = edition;
+    }
+
+    /**
+     * @param userId
+     * @param editionId
+     * @param issuesQuantity
+     * @param periodicity
+     * @return
+     */
+    public static Subscription getSubscription(int userId, int editionId, int issuesQuantity, String periodicity) {
+        Edition edition = new Edition();
+        edition.setPeriodicity(PeriodicityFactory.getPeriodicity(periodicity));
+        Subscription subscription = new Subscription();
+        subscription.setEditionId(editionId);
+        subscription.setIssuesQuantity(issuesQuantity);
+        subscription.setUserId(userId);
+        subscription.setEdition(edition);
+        return subscription;
     }
 }

@@ -50,6 +50,10 @@ public class CartController implements GetMethodController, PostMethodController
      */
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String[] ticks = req.getParameterValues("tick");
+        if (ticks == null){
+            req.setAttribute("notSelected", true);
+            return doGet(req);
+        }
         boolean pay = Boolean.parseBoolean(req.getParameter("pay"));
         boolean delete = Boolean.parseBoolean(req.getParameter("delete"));
         if (delete) {
