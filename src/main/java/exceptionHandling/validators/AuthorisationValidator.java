@@ -9,6 +9,9 @@ import exceptionHandling.exceptions.NotAuthorisedException;
  */
 public class AuthorisationValidator {
 
+    private AuthorisationValidator() {
+    }
+
     /**
      * @param user
      * @return

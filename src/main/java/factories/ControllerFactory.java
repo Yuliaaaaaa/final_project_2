@@ -19,6 +19,9 @@ public class ControllerFactory {
     private static Map<String, GetMethodController> getMethodControllerMap = new HashMap<>();
     private static Map<String, PostMethodController> postMethodControllerMap = new HashMap<>();
 
+    private ControllerFactory() {
+    }
+
     static {
         getMethodControllerMap.put("AuthorisationController", new AuthorisationController());
         getMethodControllerMap.put("UserPageController", new UserPageController());
@@ -86,15 +89,15 @@ public class ControllerFactory {
                 controller = getMethodControllerMap.get("MySubscriptionsController");
                 break;
             }
-            case ("/signOut") : {
+            case ("/signOut"): {
                 controller = getMethodControllerMap.get("SignOutController");
                 break;
             }
-            case ("/adminMain") : {
+            case ("/adminMain"): {
                 controller = getMethodControllerMap.get("AdminMainController");
                 break;
             }
-            case ("/") : {
+            case ("/"): {
                 controller = getMethodControllerMap.get("MainController");
                 break;
             }

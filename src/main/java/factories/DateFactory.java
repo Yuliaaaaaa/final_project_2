@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
  */
 public class DateFactory {
 
+    private DateFactory() {
+    }
+
     /**
      * @param startDate
      * @param periodicity

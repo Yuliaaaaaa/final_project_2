@@ -6,6 +6,9 @@ package exceptionHandling.validators;
  */
 public class InputDataValidator {
 
+    private InputDataValidator() {
+    }
+
     public static boolean registrationDataNotEmpty
             (String firstName, String lastName, String birth, String sex, String email, String password, String password2) {
         return !(firstName.isEmpty() || lastName.isEmpty() || birth.isEmpty()
@@ -17,7 +20,7 @@ public class InputDataValidator {
         return password.equals(password2);
     }
 
-    public static boolean editionsDataNotEmpty(String title, String price, String details){
+    public static boolean editionsDataNotEmpty(String title, String price, String details) {
         return !(title.isEmpty() || price.isEmpty() || details.isEmpty());
     }
 

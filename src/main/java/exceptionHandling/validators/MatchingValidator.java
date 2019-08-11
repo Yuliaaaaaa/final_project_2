@@ -14,6 +14,9 @@ public class MatchingValidator {
     private static Pattern pattern;
     private static Map<String, Pattern> patternMap = new HashMap<>();
 
+    private MatchingValidator() {
+    }
+
     static {
         patternMap.put("namePattern", Pattern.compile("[a-zA-ZА-Яа-я]+[/-]?[a-zA-ZА-Яа-я]*"));
         patternMap.put("phonePattern", Pattern.compile("[0-9]+"));
@@ -31,6 +34,7 @@ public class MatchingValidator {
         matcher = pattern.matcher(phone);
         return matcher.matches();
     }
+
     public static boolean emailMatches(String email) {
         pattern = patternMap.get("emailPattern");
         matcher = pattern.matcher(email);
