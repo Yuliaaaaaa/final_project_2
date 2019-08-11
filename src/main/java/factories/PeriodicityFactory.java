@@ -8,13 +8,16 @@ import enums.Periodicity;
  */
 public class PeriodicityFactory {
 
-    public static Periodicity getPeriodicity(String periodicity){
-        switch (periodicity){
-            case "daily" :
+    private PeriodicityFactory() {
+    }
+
+    public static Periodicity getPeriodicity(String periodicity) {
+        switch (periodicity) {
+            case "daily":
                 return Periodicity.DAILY;
-            case "weekly" :
+            case "weekly":
                 return Periodicity.WEEKLY;
-            case "monthly" :
+            case "monthly":
                 return Periodicity.MONTHLY;
             default:
                 return null;
