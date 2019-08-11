@@ -1,16 +1,16 @@
-package transactions;
+package daos.transactions;
 
+import daos.DAO;
+import daos.repositories.PaymentDetailsRepository;
+import daos.repositories.PaymentRepository;
+import daos.repositories.SubscriptionRepository;
 import enums.Periodicity;
 import factories.DateFactory;
 import factories.PeriodicityFactory;
-import jdbc.ConnectionPool;
 import models.Payment;
 import models.PaymentDetail;
 import models.Subscription;
 import org.apache.log4j.Logger;
-import repositories.PaymentDetailsRepository;
-import repositories.PaymentRepository;
-import repositories.SubscriptionRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author Yuliia Shcherbakova ON 03.08.2019
  * @project publishing
  */
-public class PaymentTransaction {
+public class PaymentTransaction implements DAO {
 
     private static final SubscriptionRepository subscriptionRepository = new SubscriptionRepository();
     private static final PaymentRepository paymentRepository = new PaymentRepository();
@@ -36,7 +36,7 @@ public class PaymentTransaction {
      * @throws SQLException
      */
     public void payImmediately(Subscription subscription, Payment payment) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         try {
             logger.info("Immediate pay transaction started!");
             connection.setAutoCommit(false);
@@ -64,7 +64,7 @@ public class PaymentTransaction {
     }
 
     public void payFromCart(List<Subscription> subscriptions, Payment payment) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         try {
             logger.info("Pay transaction started!");
             connection.setAutoCommit(false);

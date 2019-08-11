@@ -1,7 +1,6 @@
-package repositories;
+package daos.repositories;
 
 import models.User;
-import jdbc.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +24,7 @@ public class UserRepository implements Repository<User> {
     public void add(User item) throws SQLException {
         String sqlAdd = "INSERT INTO Users (first_name, last_name, birth_date, sex, phone_number,email,`password`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?);";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setString(1, item.getFirstName());
         preparedStatement.setString(2, item.getLastName());
@@ -48,7 +47,7 @@ public class UserRepository implements Repository<User> {
     @Override
     public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM Users WHERE user_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
@@ -64,7 +63,7 @@ public class UserRepository implements Repository<User> {
         String sqlUpdate = "UPDATE Users " +
                 "SET first_name = ?, last_name = ?, birth_date = ?, sex = ?, phone_number = ?, email = ? " +
                 "WHERE user_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setString(1, item.getFirstName());
         preparedStatement.setString(2, item.getLastName());
@@ -98,7 +97,7 @@ public class UserRepository implements Repository<User> {
     @Override
     public User getOneById(int id) throws SQLException {
         String sqlSelect = "SELECT * FROM Users WHERE user_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -143,12 +142,13 @@ public class UserRepository implements Repository<User> {
 
     public User checkAuthorizationInfo(String email, String password) throws SQLException {
         String sqlSelect = "SELECT * FROM Users WHERE email= ? AND `password`= ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
         List<User> users = getItems(resultSet);
+        connection.close();
         if (users.size() != 0)
             return users.get(0);
          else return null;

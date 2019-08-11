@@ -3,7 +3,7 @@ package transactionServices;
 
 import models.Payment;
 import models.Subscription;
-import transactions.PaymentTransaction;
+import daos.transactions.PaymentTransaction;
 
 import java.sql.SQLException;
 import java.util.List;

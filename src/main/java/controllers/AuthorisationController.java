@@ -25,7 +25,6 @@ public class AuthorisationController implements GetMethodController, PostMethodC
      */
     public String doGet(HttpServletRequest req) {
         req.getSession().removeAttribute("user");
-        req.getSession().removeAttribute("admin");
         return PageLocation.AUTHORISATION_PAGE;
     }
 
@@ -44,7 +43,7 @@ public class AuthorisationController implements GetMethodController, PostMethodC
             return PageLocation.AUTHORISATION_PAGE;
         }
         if(email.equals(AdminData.getLogin()) && password.equals(AdminData.getPassword())){
-            req.getSession().setAttribute("admin", true);
+            req.getSession().setAttribute("user", new SecureUser(true));
             resp.sendRedirect("/adminEditions");
             return null;
         }

@@ -49,41 +49,49 @@ public class CartController implements GetMethodController, PostMethodController
      * @throws IOException
      */
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
-        String[] ticks = req.getParameterValues("tick");
-        if (ticks == null){
+        String[] selectedSubscriptions = req.getParameterValues("tick");
+        if (selectedSubscriptions == null){
             req.setAttribute("notSelected", true);
             return doGet(req);
         }
         boolean pay = Boolean.parseBoolean(req.getParameter("pay"));
         boolean delete = Boolean.parseBoolean(req.getParameter("delete"));
         if (delete) {
-            Arrays.stream(ticks).peek(idx -> {
-                int id = Integer.parseInt(idx);
-                try {
-                    subscriptionService.delete(id);
-                } catch (SQLException e) {
-                    logger.error("Could not delete subscription " + id);
-                }
-            }).collect(Collectors.toList());
-            req.setAttribute("deleted", true);
+            deleteFromCart(req, selectedSubscriptions);
         } else if (pay) {
-            double sum = Double.parseDouble(req.getParameter("inputSum"));
-            SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-            Payment payment = new Payment();
-            payment.setPaymentSum(sum);
-            payment.setUserId(user.getUserId());
-            List<Subscription> subscriptions = Arrays.stream(ticks).map(idx -> {
-                int id = Integer.parseInt(idx);
-                try {
-                    return subscriptionService.getOneById(id);
-                } catch (SQLException e) {
-                    logger.error("Could not get subscription " + id);
-                    return null;
-                }
-            }).collect(Collectors.toList());
-            paymentTransactionService.payFromCart(subscriptions, payment);
-            req.setAttribute("paid", true);
+            payForSubscriptions(req, selectedSubscriptions);
         }
         return doGet(req);
+    }
+
+    public void payForSubscriptions(HttpServletRequest req, String[] selectedSubscriptions) throws SQLException {
+        double sum = Double.parseDouble(req.getParameter("inputSum"));
+        SecureUser user = (SecureUser) req.getSession().getAttribute("user");
+        Payment payment = new Payment();
+        payment.setPaymentSum(sum);
+        payment.setUserId(user.getUserId());
+        List<Subscription> subscriptions = Arrays.stream(selectedSubscriptions).map(idx -> {
+            int id = Integer.parseInt(idx);
+            try {
+                return subscriptionService.getOneById(id);
+            } catch (SQLException e) {
+                logger.error("Could not get subscription " + id);
+                return null;
+            }
+        }).collect(Collectors.toList());
+        paymentTransactionService.payFromCart(subscriptions, payment);
+        req.setAttribute("paid", true);
+    }
+
+    public void deleteFromCart(HttpServletRequest req, String[] selectedSubscriptions) {
+        Arrays.stream(selectedSubscriptions).peek(idx -> {
+            int id = Integer.parseInt(idx);
+            try {
+                subscriptionService.delete(id);
+            } catch (SQLException e) {
+                logger.error("Could not delete subscription " + id);
+            }
+        }).collect(Collectors.toList());
+        req.setAttribute("deleted", true);
     }
 }

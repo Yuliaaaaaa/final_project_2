@@ -1,6 +1,6 @@
-package repositories;
+package daos.repositories;
 
-import jdbc.ConnectionPool;
+import annotations.NonSecure;
 import models.Payment;
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class PaymentRepository implements Repository<Payment> {
      */
     @Override
     public void add(Payment item) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         add(item, connection);
         connection.close();
     }
@@ -29,6 +29,7 @@ public class PaymentRepository implements Repository<Payment> {
      * @param connection
      * @throws SQLException
      */
+    @NonSecure
     public void add(Payment item, Connection connection) throws SQLException {
         String sqlAdd = "INSERT INTO Payments(user_id, payment_sum, payment_date) " +
                 "VALUES (?, ?, ?);";
@@ -46,7 +47,7 @@ public class PaymentRepository implements Repository<Payment> {
     @Override
     public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM Payments WHERE payment_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
@@ -62,7 +63,7 @@ public class PaymentRepository implements Repository<Payment> {
         String sqlUpdate = "UPDATE Payments " +
                 "SET user_id = ?, payment_sum = ?, payment_date = ? " +
                 "WHERE payment_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setInt(1, item.getUserId());
         preparedStatement.setDouble(2, item.getPaymentSum());
@@ -90,7 +91,7 @@ public class PaymentRepository implements Repository<Payment> {
     @Override
     public Payment getOneById(int id) throws SQLException {
         String sqlSelect = "SELECT * FROM Payments WHERE payment_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -130,6 +131,7 @@ public class PaymentRepository implements Repository<Payment> {
      * @return
      * @throws SQLException
      */
+    @NonSecure
     public Payment getLast(Connection connection) throws SQLException {
         String sqlSelect = "SELECT * FROM payments WHERE payment_id = " +
                 "(SELECT MAX(payment_id) FROM payments);";

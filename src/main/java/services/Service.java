@@ -1,6 +1,6 @@
 package services;
 
-import repositories.Repository;
+import daos.repositories.Repository;
 
 import java.sql.SQLException;
 import java.util.List;

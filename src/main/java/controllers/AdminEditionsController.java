@@ -1,17 +1,16 @@
 package controllers;
 
 import commonlyUsedStrings.PageLocation;
+import dtos.SecureUser;
 import models.Edition;
-import repositories.EditionRepository;
+import pagination.EditionsPagination;
 import services.EditionService;
-import services.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Yuliia Shcherbakova ON 25.07.2019
@@ -26,16 +25,12 @@ public class AdminEditionsController implements GetMethodController, PostMethodC
      * @throws SQLException
      */
     public String doGet(HttpServletRequest req) throws SQLException {
-        Object admin = req.getSession().getAttribute("admin");
-        if (admin == null)
+        SecureUser user = (SecureUser) req.getSession().getAttribute("user");
+        if (user == null || !user.isAdmin())
             return PageLocation.NOT_AUTHORISED;
         List<Edition> all = service.getAll();
-        int startIndex = (int) req.getAttribute("startIndex");
-        if (startIndex == 0)
-            req.setAttribute("start", true);
-        if(all.size() - startIndex <= 10)
-            req.setAttribute("end", true);
-        all = all.stream().skip(startIndex).limit(10).collect(Collectors.toList());
+        all = EditionsPagination.getPagination()
+                .getElements(req, all);
         req.setAttribute("editions", all);
         return PageLocation.ADMIN_EDITIONS;
     }

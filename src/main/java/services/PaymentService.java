@@ -3,8 +3,7 @@ package services;
 import facade.UserFacade;
 import models.Payment;
 import org.apache.log4j.Logger;
-import repositories.PaymentDetailsRepository;
-import repositories.PaymentRepository;
+import daos.repositories.PaymentRepository;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -15,6 +15,8 @@ public class SecureUser {
     private Long phoneNumber;
     private String email;
 
+    private boolean isAdmin;
+
     /**
      * @param firstName
      * @param lastName
@@ -28,6 +30,14 @@ public class SecureUser {
         this.birthDate = birthDate;
         this.sex = sex;
         this.email = email;
+    }
+
+
+    /**
+     * @param isAdmin
+     */
+    public SecureUser(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     /**
@@ -132,5 +142,19 @@ public class SecureUser {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return
+     */
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    /**
+     * @param admin
+     */
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

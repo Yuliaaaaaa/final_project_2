@@ -1,6 +1,6 @@
-package repositories;
+package daos.repositories;
 
-import jdbc.ConnectionPool;
+import annotations.NonSecure;
 import models.Subscription;
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
      */
     @Override
     public void add(Subscription item) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         add(item, connection);
         connection.close();
     }
@@ -29,6 +29,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
      * @param connection
      * @throws SQLException
      */
+    @NonSecure
     public void add(Subscription item, Connection connection) throws SQLException {
         String sqlAdd = "INSERT INTO Subscriptions(user_id, edition_id, issues_quantity, start_date, expire_date, is_paid) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
@@ -49,7 +50,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
     @Override
     public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM Subscriptions WHERE subscription_id = ?;;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
@@ -62,11 +63,17 @@ public class SubscriptionRepository implements Repository<Subscription> {
      */
     @Override
     public void update(Subscription item) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         update(item, connection);
         connection.close();
     }
 
+    /**
+     * @param item
+     * @param connection
+     * @throws SQLException
+     */
+    @NonSecure
     public void update(Subscription item, Connection connection) throws SQLException {
         String sqlUpdate = "UPDATE Subscriptions " +
                 "SET issues_quantity = ?, start_date = ?, expire_date = ?, is_paid = ? " +
@@ -98,7 +105,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
     @Override
     public Subscription getOneById(int id) throws SQLException {
         String sqlSelect = "SELECT * FROM Subscriptions WHERE subscription_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -144,6 +151,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
      * @return
      * @throws SQLException
      */
+    @NonSecure
     public Subscription getLast(Connection connection) throws SQLException {
         String sqlSelect = "SELECT * FROM subscriptions WHERE subscription_id = " +
                 "(SELECT MAX(subscription_id) FROM subscriptions);";
@@ -170,7 +178,7 @@ public class SubscriptionRepository implements Repository<Subscription> {
     }
 
     private List<Subscription> getItemsForUser(int userId, String sqlSelect) throws SQLException {
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, userId);
         ResultSet resultSet = preparedStatement.executeQuery();

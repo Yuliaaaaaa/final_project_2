@@ -2,7 +2,7 @@ package services;
 
 import models.Subscription;
 import org.apache.log4j.Logger;
-import repositories.SubscriptionRepository;
+import daos.repositories.SubscriptionRepository;
 
 import java.sql.SQLException;
 import java.util.List;

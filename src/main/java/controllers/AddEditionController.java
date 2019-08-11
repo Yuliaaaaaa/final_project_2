@@ -4,6 +4,7 @@ import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
 import enums.Category;
 import enums.Periodicity;
+import exceptionHandling.InputDataValidator;
 import factories.CategoryFactory;
 import factories.PeriodicityFactory;
 import models.Edition;
@@ -45,7 +46,7 @@ public class AddEditionController implements GetMethodController, PostMethodCont
         String periodicity = req.getParameter("periodicity");
         String price = req.getParameter("price");
         String details = StringConverter.convertToUTF8(req.getParameter("details"));
-        if(title.isEmpty() || price.isEmpty() || details.isEmpty()) {
+        if(!InputDataValidator.editionsDataNotEmpty(title, price, details)) {
             req.setAttribute("fail", true);
             req.setAttribute("title", title);
             req.setAttribute("category", category);

@@ -12,30 +12,34 @@ import java.util.Properties;
  * @project publishing
  */
 public class AdminData {
-    private static String login;
-    private static String password;
+    private static final String LOGIN;
+    private static final String PASSWORD;
     private static final Logger logger = Logger.getLogger(AdminData.class);
 
     private AdminData(){}
 
     static {
+        String temporaryLogin = null;
+        String temporaryPassword = null;
         try (FileInputStream fileInputStream = new FileInputStream("src\\main\\resources\\adminData.properties")) {
             Properties properties = new Properties();
             properties.load(fileInputStream);
-            login = properties.getProperty("login");
-            password = properties.getProperty("password");
+            temporaryLogin = properties.getProperty("login");
+            temporaryPassword = properties.getProperty("password");
         } catch (FileNotFoundException e) {
             logger.error("File with admin data not found");
         } catch (IOException e) {
-            logger.error("I/O Exception occurred!");
+            logger.error(ErrorMessage.IO_EXCEPTION);
         }
+        LOGIN = temporaryLogin;
+        PASSWORD = temporaryPassword;
     }
 
     public static String getLogin() {
-        return login;
+        return LOGIN;
     }
 
     public static String getPassword() {
-        return password;
+        return PASSWORD;
     }
 }

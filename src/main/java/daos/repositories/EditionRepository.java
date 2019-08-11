@@ -1,10 +1,9 @@
-package repositories;
+package daos.repositories;
 
 import enums.Category;
 import enums.Periodicity;
 import factories.CategoryFactory;
 import factories.PeriodicityFactory;
-import jdbc.ConnectionPool;
 import models.Edition;
 
 import java.sql.Connection;
@@ -26,11 +25,11 @@ public class EditionRepository implements Repository<Edition> {
     public void add(Edition item) throws SQLException {
         String sqlAdd = "INSERT INTO Editions(edition_title, category, periodicity, `description`, price) " +
                 "VALUES (?, ?, ?, ?, ?);";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAdd);
         preparedStatement.setString(1, item.getEditionTitle());
-        preparedStatement.setString(2, item.getCategory().toString().toLowerCase());
-        preparedStatement.setString(3, item.getPeriodicity().toString().toLowerCase());
+        preparedStatement.setString(2, item.getCategory().toLowerCase());
+        preparedStatement.setString(3, item.getPeriodicity().toLowerCase());
         preparedStatement.setString(4, item.getDescription());
         preparedStatement.setDouble(5, item.getPrice());
         preparedStatement.execute();
@@ -43,7 +42,7 @@ public class EditionRepository implements Repository<Edition> {
     @Override
     public void delete(int id) throws SQLException {
         String sqlDelete = "DELETE FROM  Editions WHERE edition_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
@@ -58,7 +57,7 @@ public class EditionRepository implements Repository<Edition> {
         String sqlUpdate = "UPDATE Editions " +
                 "SET edition_title = ?, category = ?, periodicity = ?, `description` = ?, price = ? " +
                 "WHERE edition_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
         preparedStatement.setString(1, item.getEditionTitle());
         preparedStatement.setString(2, item.getCategory().toString().toLowerCase());
@@ -86,7 +85,7 @@ public class EditionRepository implements Repository<Edition> {
     @Override
     public Edition getOneById(int id) throws SQLException {
         String sqlSelect = "SELECT * FROM Editions WHERE edition_id = ?;";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -135,7 +134,7 @@ public class EditionRepository implements Repository<Edition> {
         String sqlSelect = "SELECT * FROM editions " +
                 "WHERE edition_id NOT IN " +
                 "(SELECT edition_id FROM subscriptions WHERE user_id = ? AND expire_date > CURDATE());";
-        Connection connection = ConnectionPool.getConnection();
+        Connection connection = receiveConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
         preparedStatement.setInt(1, userId);
         ResultSet resultSet = preparedStatement.executeQuery();

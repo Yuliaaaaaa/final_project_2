@@ -7,6 +7,7 @@ import dtos.SecureUser;
 import models.Payment;
 import models.PaymentDetail;
 import models.Subscription;
+import pagination.EditionsPagination;
 import services.EditionService;
 import services.SubscriptionService;
 import transactionServices.PaymentTransactionService;
@@ -38,12 +39,8 @@ public class SubscribeController implements GetMethodController, PostMethodContr
         if (user == null)
             return PageLocation.NOT_AUTHORISED;
         List<Edition> unsubscribedEditions = editionService.getAllUnsubscribedEditions(user.getUserId());
-        int startIndex = (int) req.getAttribute("startIndex");
-        if (startIndex == 0)
-            req.setAttribute("start", true);
-        if (unsubscribedEditions.size() - startIndex <= 10)
-            req.setAttribute("end", true);
-        unsubscribedEditions = unsubscribedEditions.stream().skip(startIndex).limit(10).collect(Collectors.toList());
+        unsubscribedEditions = EditionsPagination.getPagination()
+                .getElements(req, unsubscribedEditions);
         req.setAttribute("editions", unsubscribedEditions);
         return PageLocation.SUBSCRIPTION_PAGE;
     }
@@ -61,7 +58,7 @@ public class SubscribeController implements GetMethodController, PostMethodContr
         if (user == null)
             return PageLocation.NOT_AUTHORISED;
         String issues = req.getParameter("issues");
-        if (issues.isEmpty()){
+        if (issues.isEmpty()) {
             req.setAttribute("notSelected", true);
             return doGet(req);
         }

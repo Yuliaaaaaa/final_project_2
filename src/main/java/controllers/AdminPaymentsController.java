@@ -1,7 +1,9 @@
 package controllers;
 
 import commonlyUsedStrings.PageLocation;
+import dtos.SecureUser;
 import models.Payment;
+import pagination.PaymentsPagination;
 import services.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,16 +23,12 @@ public class AdminPaymentsController implements GetMethodController {
      * @return
      */
     public String doGet(HttpServletRequest req) throws SQLException {
-        Object admin = req.getSession().getAttribute("admin");
-        if (admin == null)
+        SecureUser user = (SecureUser) req.getSession().getAttribute("user");
+        if (user == null || !user.isAdmin())
             return PageLocation.NOT_AUTHORISED;
         List<Payment> payments = paymentService.getAll();
-        int startIndex = (int) req.getAttribute("startIndex");
-        if (startIndex == 0)
-            req.setAttribute("start", true);
-        if(payments.size() - startIndex <= 10)
-            req.setAttribute("end", true);
-        payments = payments.stream().skip(startIndex).limit(10).collect(Collectors.toList());
+        payments = PaymentsPagination.getPagination()
+                .getElements(req, payments);
         req.setAttribute("payments", payments);
         return PageLocation.ADMIN_PAYMENTS;
     }

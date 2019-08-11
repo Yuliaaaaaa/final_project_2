@@ -1,7 +1,7 @@
 package services;
 
 import models.Edition;
-import repositories.EditionRepository;
+import daos.repositories.EditionRepository;
 
 import java.sql.SQLException;
 import java.util.List;

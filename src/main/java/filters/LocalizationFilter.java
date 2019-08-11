@@ -24,25 +24,23 @@ public class LocalizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String locale = request.getParameter("locale");
-        if(locale != null){
-            this.locale = locale;
-            logger.info("Changed locale to " + locale);
+        String receivedLocale = request.getParameter("locale");
+        if (receivedLocale != null) {
+            this.locale = receivedLocale;
+            logger.info("Changed locale to " + receivedLocale);
+        } else {
+            receivedLocale = (String) request.getSession().getAttribute("locale");
+            if (receivedLocale != null)
+                this.locale = receivedLocale;
         }
-        else {
-            locale = (String) request.getSession().getAttribute("locale");
-            if(locale != null)
-                this.locale = locale;
-        }
-        String bundle = request.getParameter("bundle");
-        if(bundle != null){
-            this.bundle = bundle;
-            logger.info("Changed bundle to " + bundle);
-        }
-        else {
-            bundle = (String) request.getSession().getAttribute("bundle");
-            if(bundle != null)
-                this.bundle = bundle;
+        String receivedBundle = request.getParameter("bundle");
+        if (receivedBundle != null) {
+            this.bundle = receivedBundle;
+            logger.info("Changed bundle to " + receivedBundle);
+        } else {
+            receivedBundle = (String) request.getSession().getAttribute("bundle");
+            if (receivedBundle != null)
+                this.bundle = receivedBundle;
         }
 
         request.getSession().setAttribute("locale", this.locale);

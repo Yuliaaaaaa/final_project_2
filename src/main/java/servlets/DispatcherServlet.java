@@ -1,5 +1,6 @@
 package servlets;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
 import factories.ControllerFactory;
 import org.apache.log4j.Logger;
@@ -32,7 +33,7 @@ public class DispatcherServlet extends HttpServlet {
             page = ControllerFactory.doGet(req);
         } catch (SQLException e) {
             page = PageLocation.SQL_EXCEPTION;
-            logger.error("SQLException occurred!");
+            logger.error(ErrorMessage.SQL_EXCEPTION);
         }
         if (page != null)
             req.getRequestDispatcher(page)
@@ -52,7 +53,7 @@ public class DispatcherServlet extends HttpServlet {
             page = ControllerFactory.doPost(req, resp);
         } catch (SQLException e) {
             page = PageLocation.SQL_EXCEPTION;
-            logger.error("SQLException occurred!");
+            logger.error(ErrorMessage.SQL_EXCEPTION);
         }
         if (page != null)
             req.getRequestDispatcher(page)

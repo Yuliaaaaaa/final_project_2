@@ -3,7 +3,7 @@ package services;
 import models.PaymentDetail;
 import models.Subscription;
 import org.apache.log4j.Logger;
-import repositories.PaymentDetailsRepository;
+import daos.repositories.PaymentDetailsRepository;
 
 import java.sql.SQLException;
 import java.util.List;

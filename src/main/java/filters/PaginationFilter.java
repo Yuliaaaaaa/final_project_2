@@ -21,7 +21,6 @@ public class PaginationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-/*editions*/
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String startIndex = req.getParameter("startIndex");
         if(startIndex != null)

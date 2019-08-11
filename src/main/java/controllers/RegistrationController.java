@@ -2,6 +2,8 @@ package controllers;
 
 import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
+import exceptionHandling.MatchingValidator;
+import exceptionHandling.InputDataValidator;
 import models.User;
 import org.apache.log4j.Logger;
 import services.UserService;
@@ -13,8 +15,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Yuliia Shcherbakova ON 26.07.2019
@@ -48,41 +48,33 @@ public class RegistrationController implements GetMethodController, PostMethodCo
         String email = StringConverter.convertToUTF8(req.getParameter("email"));
         String password = StringConverter.convertToUTF8(req.getParameter("password"));
         String password2 = StringConverter.convertToUTF8(req.getParameter("password2"));
-        if(firstName.isEmpty() || lastName.isEmpty() || birth.isEmpty()
-                || sex.isEmpty() || email.isEmpty()
-                || password.isEmpty() || password2.isEmpty()) {
+        if(!InputDataValidator.registrationDataNotEmpty(firstName, lastName, birth, sex, email,
+                password, password2)) {
             req.setAttribute("emptyFields", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        if(!password.equals(password2)){
+        if(!InputDataValidator.registrationPasswordsEqual(password, password2)){
             req.setAttribute("passwordsNotEqual", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        Pattern namePattern = Pattern.compile("[a-zA-ZА-Яа-я]+[/-]?[a-zA-ZА-Яа-я]*");
-        Matcher matcher = namePattern.matcher(firstName);
-        if(!matcher.matches()){
+        if(!MatchingValidator.nameMatches(firstName)){
             req.setAttribute("fnWrong", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        matcher = namePattern.matcher(lastName);
-        if(!matcher.matches()){
+        if(!MatchingValidator.nameMatches(lastName)){
             req.setAttribute("lnWrong", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        Pattern phonePattern = Pattern.compile("[0-9]+");
-        matcher = phonePattern.matcher(phoneNumber);
-        if(!matcher.matches()){
+        if(!MatchingValidator.phoneMatches(phoneNumber)){
             req.setAttribute("phWrong", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        Pattern emailPattern = Pattern.compile("[a-zA-ZА-Яа-я0-9_]+[@]{1}[a-zA-ZА-Яа-я]+[/.]{1}[a-zA-ZА-Яа-я]+");
-        matcher = emailPattern.matcher(email);
-        if(!matcher.matches()){
+        if(!MatchingValidator.emailMatches(email)){
             req.setAttribute("emailWrong", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;

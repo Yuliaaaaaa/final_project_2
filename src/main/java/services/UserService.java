@@ -1,7 +1,7 @@
 package services;
 
 import models.User;
-import repositories.UserRepository;
+import daos.repositories.UserRepository;
 
 import java.sql.SQLException;
 
@@ -38,12 +38,4 @@ public class UserService extends Service<User> {
                 checkAuthorizationInfo(email, password);
     }
 
-    /**
-     * @param user
-     * @throws SQLException
-     */
-    public void add(User user) throws SQLException {
-        ((UserRepository)repository)
-                .add(user);
-    }
 }
