@@ -1,5 +1,6 @@
 package services;
 
+import models.Edition;
 import models.Subscription;
 import org.apache.log4j.Logger;
 import daos.repositories.SubscriptionRepository;
@@ -44,7 +45,8 @@ public class SubscriptionService extends Service<Subscription> {
     }
 
     private void setEdition(Subscription subscription) throws SQLException {
-        subscription.setEdition(editionService.getOneById(subscription.getEditionId()));
+        Edition edition = editionService.getOneById(subscription.getEditionId());
+        subscription.setEdition(edition);
     }
 
     public List<Subscription> getAllUnpaidForUser(int userId) throws SQLException {

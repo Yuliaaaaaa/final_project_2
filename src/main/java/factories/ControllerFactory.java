@@ -28,6 +28,9 @@ public class ControllerFactory {
         getMethodControllerMap.put("SubscribeController", new SubscribeController());
         getMethodControllerMap.put("CartController", new CartController());
         getMethodControllerMap.put("MySubscriptionsController", new MySubscriptionsController());
+        getMethodControllerMap.put("SignOutController", new SignOutController());
+        getMethodControllerMap.put("AdminMainController", new AdminMainController());
+        getMethodControllerMap.put("MainController", new MainController());
 
         postMethodControllerMap.put("AuthorisationController", new AuthorisationController());
         postMethodControllerMap.put("AdminEditionsController", new AdminEditionsController());
@@ -80,6 +83,18 @@ public class ControllerFactory {
             }
             case ("/mySubscriptions"): {
                 controller = getMethodControllerMap.get("MySubscriptionsController");
+                break;
+            }
+            case ("/signOut") : {
+                controller = getMethodControllerMap.get("SignOutController");
+                break;
+            }
+            case ("/adminMain") : {
+                controller = getMethodControllerMap.get("AdminMainController");
+                break;
+            }
+            case ("/") : {
+                controller = getMethodControllerMap.get("MainController");
                 break;
             }
         }

@@ -21,7 +21,7 @@
 </head>
 <body>
 <ul class="menu">
-    <li><a><img style="position: relative" height="20.75px"
+    <li><a href="/"><img style="position: relative" height="20.75px"
                 src="https://png2.kisspng.com/sh/f8c25c656b2cb78a12f1c3e51e1bcc43/L0KzQYm3U8I5N6RAfZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tf1ib5JBgdDuLXTyh7BzjBFlNZ5mf9NFaX7oPYbogvJlOWRpTtRrYUO7PoGCUMQ1PmY5Sac7MkK4SIO6V8Q1OWQziNDw/kisspng-computer-icons-magazine-download-magazine-5abbd13d6bba38.0904465415222582374413.png">
     </a></li>
     <li><a href="/mySubscriptions"><fmt:message key="label.mainMenu.mySubscriptions"/></a></li>
@@ -31,7 +31,7 @@
     <c:choose>
         <c:when test="${user.getFirstName() != null}">
             <li><a href="/userPage"><fmt:message key="label.mainMenu.userPage"/></a></li>
-            <li><a href="/authorisation"><fmt:message key="label.mainMenu.signOut"/> </a></li>
+            <li><a href="/signOut"><fmt:message key="label.mainMenu.signOut"/> </a></li>
         </c:when>
         <c:otherwise>
             <li><a href="/authorisation"><fmt:message key="label.mainMenu.signIn"/></a></li>
