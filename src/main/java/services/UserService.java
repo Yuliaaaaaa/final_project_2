@@ -1,7 +1,7 @@
 package services;
 
-import models.User;
 import daos.repositories.UserRepository;
+import models.User;
 
 import java.sql.SQLException;
 

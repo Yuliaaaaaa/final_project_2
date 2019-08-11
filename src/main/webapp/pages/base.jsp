@@ -22,11 +22,11 @@
 <body>
 <ul class="menu">
     <li><a href="/"><img style="position: relative" height="20.75px"
-                src="https://png2.kisspng.com/sh/f8c25c656b2cb78a12f1c3e51e1bcc43/L0KzQYm3U8I5N6RAfZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tf1ib5JBgdDuLXTyh7BzjBFlNZ5mf9NFaX7oPYbogvJlOWRpTtRrYUO7PoGCUMQ1PmY5Sac7MkK4SIO6V8Q1OWQziNDw/kisspng-computer-icons-magazine-download-magazine-5abbd13d6bba38.0904465415222582374413.png">
+                src="https://png2.kisspng.com/sh/8581204998f3db2695f56a76cda73f17/L0KzQYm3V8A0N6l1h5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tf1ib5JBgdDuLXnmf7A0VfI0apVmSagEY3a7RIe1WccyQGk5Sqs6NUOzRoWCUcExPmU4RuJ3Zx==/kisspng-computer-icons-magazine-icon-5b3bda169cf846.971884291530649110643.png">
     </a></li>
     <li><a href="/mySubscriptions"><fmt:message key="label.mainMenu.mySubscriptions"/></a></li>
     <li><a href="/subscribe"><fmt:message key="label.mainMenu.subscribe"/></a></li>
-    <li><a href="/cart"><img height="15px" src="https://png2.kisspng.com/sh/3d6a31c725a41ae4b0c574a170d51850/L0KzQYm3U8I4N6FuiZH0aYP2gLBuTgNpd6F1gdDwLXPkgsW0kB9nfKhmitc2b37vebBsTgNpd6F1gdDwLXPyfcH8lPVzNZpoRdNtZD33f37qggJ1NZN6jOZ4bj24cbOCg8hjaWY5StdvOT60QIe4VMc4P2I6SqQ6MkS8SIe6VMQ5NqFzf3==/kisspng-shopping-cart-software-online-shopping-computer-ic-add-to-cart-button-5ab9c8ba542ef9.1061477715221249863448.png">
+    <li><a href="/cart"><img height="15px" src="https://png2.kisspng.com/sh/cf6cca13a209854bdab8e8d5d88e3bae/L0KzQYi4UsE4N5Q1fJGAYUO5RLOAVcJkOGc4S5CEOUi3Q4a7UsE2OWQ6SKkCMEG0SIG6TwBvbz==/5a364b752c0633.9984354215135077011803.png">
         <fmt:message key="label.mainMenu.cart"/></a></li>
     <c:choose>
         <c:when test="${user.getFirstName() != null}">

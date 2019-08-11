@@ -2,6 +2,7 @@ package servlets;
 
 import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
+import exceptionHandling.exceptions.NotAuthorisedException;
 import factories.ControllerFactory;
 import org.apache.log4j.Logger;
 
@@ -34,6 +35,11 @@ public class DispatcherServlet extends HttpServlet {
         } catch (SQLException e) {
             page = PageLocation.SQL_EXCEPTION;
             logger.error(ErrorMessage.SQL_EXCEPTION);
+        } catch (NotAuthorisedException e) {
+            page = PageLocation.NOT_AUTHORISED;
+        } catch (NullPointerException e) {
+            page = PageLocation.NULL_POINTER_EXCEPTION;
+            logger.error(ErrorMessage.NULL_POINTER_EXCEPTION);
         }
         if (page != null)
             req.getRequestDispatcher(page)

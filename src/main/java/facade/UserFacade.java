@@ -1,7 +1,7 @@
 package facade;
 
-import models.User;
 import dtos.SecureUser;
+import models.User;
 import services.UserService;
 
 import java.sql.SQLException;

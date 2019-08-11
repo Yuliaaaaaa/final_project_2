@@ -12,8 +12,8 @@ import services.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Yuliia Shcherbakova ON 26.07.2019
@@ -31,6 +31,7 @@ public class AdminPaymentsController implements GetMethodController {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
         if (AuthorisationValidator.adminAuthorised(user)) {
             List<Payment> payments = paymentService.getAll();
+            Collections.reverse(payments);
             payments = PaymentsPagination.getPagination()
                     .getElements(req, payments);
             req.setAttribute("payments", payments);

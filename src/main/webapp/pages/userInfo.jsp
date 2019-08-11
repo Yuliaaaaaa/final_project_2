@@ -34,11 +34,11 @@
             <td>
                 <c:if test="${user.getSex() eq 'm'.charAt(0)}">
                     <img class="sexPicture" style="padding-right: 30px"
-                         src="https://png2.kisspng.com/sh/9ba778b90367f1dff73946ee478cf267/L0KzQYm3U8I6N5RriZH0aYP2gLBuTfJmaaNpReVybHjyhbb7lPUuepDAed59eT3pgrbsTfJmaaNpRdN3ZD3wf8b6lPFkcJYyTdNrY3TkSILshPE4bGgzSKoDM0W8Roi4VcIzO2M7SaYAOUe2RHB3jvc=/kisspng-beard-silhouette-royalty-free-beard-and-moustache-5abcda81eda7d7.0883596715223261459734.png">
+                         src="https://png2.kisspng.com/sh/e6817571f378ebaa379cebae3844401b/L0KzQYm3VcI5N5h0j5H0aYP2gLBuTflzd58yhdN3LYDogMHskr1xd6V5i59tZYPuhLF3TgdidJ11eeJucj3rebjvTfRmbppzRdt7b36wfbL1Tfxwb5CyTdQ5Y0CzQYm8hMcyO2gzUKU5N0GzQ4i4VcI4PWI4SaM7M0i1SHB3jvc=/kisspng-iron-man-pepper-potts-desktop-wallpaper-high-defin-iron-man-logo-5b0c00185d7137.8307103715275131123828.png">
                 </c:if>
                 <c:if test="${user.getSex() eq 'f'.charAt(0)}">
                     <img class="sexPicture" style="margin-left: -50px;"
-                         src="https://png2.kisspng.com/sh/589aeedff0500a3162b63a495954e20e/L0KzQYm3VMExN5lxj5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfhicaN4jOt1ZT3rcbr5TfNiepYyj9H2ZX6weLLwkr02aZRofKk5ZUnndYW9Wb42OWQ5S6o6NEG4QoS6V8M5O2k7TKgCLoDxd1==/kisspng-computer-icons-hairstyle-hair-care-women-hair-5accd70e9de469.5134381415233738386467.png">
+                         src="https://png2.kisspng.com/sh/e67dcbc8de4c19215e4ac998f17e9db3/L0KzQYm3VMExN5lxj5H0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfhicaN4jOt1ZT3rcbr5TfNiepYyj9H2ZX6weLLwkr02aZRofKk5ZUnndYW9Wb42OWQ5S6o6NEG4QoS6V8M5O2k7TKgCLoDxd1==/kisspng-computer-icons-hairstyle-hair-care-women-hair-5accd70e9de469.5134381415233738386467.png">
                 </c:if>
             </td>
             <td align="right">

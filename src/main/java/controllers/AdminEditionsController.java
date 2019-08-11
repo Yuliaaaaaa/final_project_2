@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Yuliia Shcherbakova ON 25.07.2019

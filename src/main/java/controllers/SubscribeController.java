@@ -2,13 +2,11 @@ package controllers;
 
 import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
+import dtos.SecureUser;
 import exceptionHandling.exceptions.NotAuthorisedException;
 import exceptionHandling.validators.AuthorisationValidator;
-import factories.PeriodicityFactory;
 import models.Edition;
-import dtos.SecureUser;
 import models.Payment;
-import models.PaymentDetail;
 import models.Subscription;
 import org.apache.log4j.Logger;
 import pagination.EditionsPagination;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Yuliia Shcherbakova ON 01.08.2019

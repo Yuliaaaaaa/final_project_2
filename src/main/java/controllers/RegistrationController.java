@@ -2,8 +2,8 @@ package controllers;
 
 import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
-import exceptionHandling.validators.MatchingValidator;
 import exceptionHandling.validators.InputDataValidator;
+import exceptionHandling.validators.MatchingValidator;
 import models.User;
 import org.apache.log4j.Logger;
 import services.UserService;
@@ -69,7 +69,7 @@ public class RegistrationController implements GetMethodController, PostMethodCo
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;
         }
-        if(!MatchingValidator.phoneMatches(phoneNumber)){
+        if(!phoneNumber.isEmpty() && !MatchingValidator.phoneMatches(phoneNumber)){
             req.setAttribute("phWrong", true);
             setAttributes(req, firstName, lastName, birth, sex, phoneNumber, email);
             return PageLocation.REGISTRATION_PAGE;

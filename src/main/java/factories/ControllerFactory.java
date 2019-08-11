@@ -2,6 +2,7 @@ package factories;
 
 import commonlyUsedStrings.PageLocation;
 import controllers.*;
+import exceptionHandling.exceptions.NotAuthorisedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +46,7 @@ public class ControllerFactory {
      * @param req
      * @return
      */
-    public static String doGet(HttpServletRequest req) throws SQLException {
+    public static String doGet(HttpServletRequest req) throws SQLException, NotAuthorisedException {
         String requestURI = req.getRequestURI();
         GetMethodController controller = null;
         switch (requestURI) {

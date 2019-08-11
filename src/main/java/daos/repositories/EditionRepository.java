@@ -85,13 +85,33 @@ public class EditionRepository implements Repository<Edition> {
     @Override
     public Edition getOneById(int id) throws SQLException {
         String sqlSelect = "SELECT * FROM Editions WHERE edition_id = ?;";
+        List<Edition> items = searchForItemsUsingId(id, sqlSelect);
+        if (items.size() != 0) return items.get(0);
+        else return getDeletedEditionOneById(id);
+    }
+
+    private List<Edition> searchForItemsUsingId(int id, String sqlScript) throws SQLException {
         Connection connection = receiveConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlScript);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         List<Edition> items = getItems(resultSet);
         connection.close();
-        if (items.size() != 0) return items.get(0);
+        return items;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public Edition getDeletedEditionOneById(int id) throws SQLException {
+        String sqlSelect = "SELECT * FROM `deleted editions` WHERE edition_id = ?;";
+        List<Edition> items = searchForItemsUsingId(id, sqlSelect);
+        if (items.size() != 0) {
+            Edition edition = items.get(0);
+            edition.setDeleted(true);
+            return edition;
+        }
         else return null;
     }
 
@@ -134,12 +154,7 @@ public class EditionRepository implements Repository<Edition> {
         String sqlSelect = "SELECT * FROM editions " +
                 "WHERE edition_id NOT IN " +
                 "(SELECT edition_id FROM subscriptions WHERE user_id = ? AND expire_date > CURDATE());";
-        Connection connection = receiveConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
-        preparedStatement.setInt(1, userId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        List<Edition> items = getItems(resultSet);
-        connection.close();
+        List<Edition> items = searchForItemsUsingId(userId, sqlSelect);
         return items;
     }
 

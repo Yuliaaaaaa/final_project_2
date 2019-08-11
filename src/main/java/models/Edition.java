@@ -13,6 +13,7 @@ public class Edition {
     private Periodicity periodicity;
     private String description;
     private double price;
+    private boolean isDeleted;
 
 
     /**
@@ -28,12 +29,14 @@ public class Edition {
         this.periodicity = periodicity;
         this.description = description;
         this.price = price;
+        isDeleted = false;
     }
 
     /**
      *
      */
     public Edition() {
+        isDeleted = false;
     }
 
     /**
@@ -118,5 +121,19 @@ public class Edition {
      */
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    /**
+     * @return
+     */
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * @param deleted
+     */
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

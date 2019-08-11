@@ -2,9 +2,9 @@ package controllers;
 
 import commonlyUsedStrings.AdminData;
 import commonlyUsedStrings.PageLocation;
+import dtos.SecureUser;
 import exceptionHandling.validators.InputDataValidator;
 import facade.UserFacade;
-import dtos.SecureUser;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

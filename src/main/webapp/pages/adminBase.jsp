@@ -25,7 +25,7 @@
     <li><a href="/adminMain">
         <i><fmt:message key="label.adminMenu.title"/> </i>
         <img style="position: relative" height="17px"
-                src="https://png2.kisspng.com/sh/ac958b1f951b567689686f98535bd33e/L0KzQYm3V8E2N6VmiJH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfVva5J1iAd1YYTodH73jCN1e5R3geJ9LXewg8bwlPUua51uRdNtbXnxPbrqjB4uPZM5edY5NkC8coK8UskvPWcATqICN0i0RYS4VsI6Pmc5TqUAMj7zfri=/kisspng-computer-icons-encapsulated-postscript-g-suite-cli-admin-icon-5b4ad0609b1529.5696077815316296646352.png">
+                src="https://png2.kisspng.com/sh/76d6a4387f5d45505177f29778f87d76/L0KzQYm3V8EzN5D7gJH0aYP2gLBuTgdzcaVuhtk2aX7pf7j5ggBpcZQyjARydHX1Pbn2jfV4d6NwRdd8c3H8PbLrjflvNZpoh9C2NXK3RrfqVMU6QGk5SqY3OUK8RYGAV8IyPWQ2S6kDN0W6RoO7V75xdpg=/kisspng-writing-infographic-writer-homework-essay-admin-icon-5b46fc45988424.9295077215313787576247.png">
     </a></li>
     <li><a href="/adminEditions"><fmt:message key="label.adminMenu.editions"/></a></li>
     <li><a href="/adminPayments"><fmt:message key="label.adminMenu.payments"/></a></li>

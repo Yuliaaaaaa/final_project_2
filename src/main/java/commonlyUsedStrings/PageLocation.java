@@ -20,4 +20,5 @@ public class PageLocation {
     public static final String MY_SUBSCRIPTIONS_PAGE = "pages/mySubscriptionsPage.jsp";
     public static final String ADMIN_MAIN = "pages/adminMainPage.jsp";
     public static final String MAIN = "pages/mainPage.jsp";
+    public static final String NULL_POINTER_EXCEPTION = "errorPages/NullPointerException.jsp";;
 }
