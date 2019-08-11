@@ -153,6 +153,9 @@
                         </c:if>
                         <c:if test="${edition.isDeleted()}">
                             <br>
+                            <input type="hidden" name="issues" value="0">
+                            <input type="hidden" name="sum" value="0">
+                            <input type="hidden" name="disabledSum" value="0">
                             <p style="color: firebrick">
                                 <fmt:message key="label.editions.isDeleted"/>
                             </p>
