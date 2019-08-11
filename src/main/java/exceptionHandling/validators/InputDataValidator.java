@@ -1,4 +1,4 @@
-package exceptionHandling;
+package exceptionHandling.validators;
 
 /**
  * @author Yuliia Shcherbakova ON 11.08.2019
@@ -21,4 +21,7 @@ public class InputDataValidator {
         return !(title.isEmpty() || price.isEmpty() || details.isEmpty());
     }
 
+    public static boolean authorisationDataNotEmpty(String email, String password) {
+        return !(email.isEmpty() || password.isEmpty());
+    }
 }

@@ -1,8 +1,12 @@
 package controllers;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
 import dtos.SecureUser;
+import exceptionHandling.exceptions.NotAuthorisedException;
+import exceptionHandling.validators.AuthorisationValidator;
 import models.Edition;
+import org.apache.log4j.Logger;
 import pagination.EditionsPagination;
 import services.EditionService;
 
@@ -18,21 +22,29 @@ import java.util.stream.Collectors;
  */
 public class AdminEditionsController implements GetMethodController, PostMethodController {
     private static final EditionService service = EditionService.getEditionService();
+    private static final Logger logger = Logger.getLogger(AdminEditionsController.class);
 
     /**
      * @param req
      * @return
      * @throws SQLException
      */
-    public String doGet(HttpServletRequest req) throws SQLException {
+    public String doGet(HttpServletRequest req) throws SQLException{
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user == null || !user.isAdmin())
+        try {
+            if (AuthorisationValidator.adminAuthorised(user)){
+                List<Edition> all = service.getAll();
+                all = EditionsPagination.getPagination()
+                        .getElements(req, all);
+                req.setAttribute("editions", all);
+                return PageLocation.ADMIN_EDITIONS;
+            }
+        }
+        catch (NotAuthorisedException e) {
             return PageLocation.NOT_AUTHORISED;
-        List<Edition> all = service.getAll();
-        all = EditionsPagination.getPagination()
-                .getElements(req, all);
-        req.setAttribute("editions", all);
-        return PageLocation.ADMIN_EDITIONS;
+        }
+        logger.error(ErrorMessage.NOT_AUTHORISED);
+        return null;
     }
 
 

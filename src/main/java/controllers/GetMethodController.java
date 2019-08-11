@@ -1,5 +1,7 @@
 package controllers;
 
+import exceptionHandling.exceptions.NotAuthorisedException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
@@ -13,5 +15,5 @@ public interface GetMethodController {
      * @return
      * @throws SQLException
      */
-    String doGet(HttpServletRequest req) throws SQLException;
+    String doGet(HttpServletRequest req) throws SQLException, NotAuthorisedException;
 }

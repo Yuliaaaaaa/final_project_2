@@ -1,4 +1,4 @@
-package exceptionHandling;
+package exceptionHandling.validators;
 
 import java.util.HashMap;
 import java.util.Map;

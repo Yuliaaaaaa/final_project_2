@@ -2,8 +2,8 @@ package controllers;
 
 import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
-import exceptionHandling.MatchingValidator;
-import exceptionHandling.InputDataValidator;
+import exceptionHandling.validators.MatchingValidator;
+import exceptionHandling.validators.InputDataValidator;
 import models.User;
 import org.apache.log4j.Logger;
 import services.UserService;

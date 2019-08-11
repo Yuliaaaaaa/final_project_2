@@ -1,12 +1,16 @@
 package controllers;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
+import exceptionHandling.exceptions.NotAuthorisedException;
+import exceptionHandling.validators.AuthorisationValidator;
 import factories.PeriodicityFactory;
 import models.Edition;
 import dtos.SecureUser;
 import models.Payment;
 import models.PaymentDetail;
 import models.Subscription;
+import org.apache.log4j.Logger;
 import pagination.EditionsPagination;
 import services.EditionService;
 import services.SubscriptionService;
@@ -27,6 +31,7 @@ public class SubscribeController implements GetMethodController, PostMethodContr
     private static final EditionService editionService = EditionService.getEditionService();
     private static final SubscriptionService subscriptionService = SubscriptionService.getSubscriptionService();
     private static final PaymentTransactionService paymentTransactionService = PaymentTransactionService.getPaymentTransactionService();
+    private static final Logger logger = Logger.getLogger(SubscribeController.class);
 
 
     /**
@@ -36,13 +41,19 @@ public class SubscribeController implements GetMethodController, PostMethodContr
      */
     public String doGet(HttpServletRequest req) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user == null)
+        try {
+            if (AuthorisationValidator.userAuthorised(user)) {
+                List<Edition> unsubscribedEditions = editionService.getAllUnsubscribedEditions(user.getUserId());
+                unsubscribedEditions = EditionsPagination.getPagination()
+                        .getElements(req, unsubscribedEditions);
+                req.setAttribute("editions", unsubscribedEditions);
+                return PageLocation.SUBSCRIPTION_PAGE;
+            }
+        } catch (NotAuthorisedException e) {
             return PageLocation.NOT_AUTHORISED;
-        List<Edition> unsubscribedEditions = editionService.getAllUnsubscribedEditions(user.getUserId());
-        unsubscribedEditions = EditionsPagination.getPagination()
-                .getElements(req, unsubscribedEditions);
-        req.setAttribute("editions", unsubscribedEditions);
-        return PageLocation.SUBSCRIPTION_PAGE;
+        }
+        logger.error(ErrorMessage.NOT_AUTHORISED);
+        return null;
     }
 
 

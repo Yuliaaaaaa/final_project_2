@@ -1,11 +1,15 @@
 package controllers;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
 import dtos.SecureUser;
 import enums.Periodicity;
+import exceptionHandling.exceptions.NotAuthorisedException;
+import exceptionHandling.validators.AuthorisationValidator;
 import factories.PeriodicityFactory;
 import factories.QuantityFactory;
 import models.Subscription;
+import org.apache.log4j.Logger;
 import services.SubscriptionService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,24 +26,32 @@ import java.util.List;
 public class MySubscriptionsController implements GetMethodController, PostMethodController {
     private static final SubscriptionService subscriptionService = SubscriptionService.
             getSubscriptionService();
+    private static final Logger logger = Logger.getLogger(MySubscriptionsController.class);
 
     public String doGet(HttpServletRequest req) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user == null)
+        try {
+            if (AuthorisationValidator.userAuthorised(user)) {
+                List<Subscription> subscriptions = subscriptionService.getAllPaidForUser(user.getUserId());
+                subscriptions.stream()
+                        .forEach(subscription -> {
+                            Timestamp startDate = subscription.getStartDate();
+                            int issuesQuantity = subscription.getIssuesQuantity();
+                            Periodicity periodicity = PeriodicityFactory
+                                    .getPeriodicity(subscription.getEdition().getPeriodicity());
+                            int remainingQuantity = QuantityFactory
+                                    .getRemainingQuantity(startDate, issuesQuantity, periodicity);
+                            subscription.setIssuesQuantity(remainingQuantity);
+                        });
+                req.setAttribute("subscriptions", subscriptions);
+                return PageLocation.MY_SUBSCRIPTIONS_PAGE;
+            }
+        } catch (NotAuthorisedException e) {
             return PageLocation.NOT_AUTHORISED;
-        List<Subscription> subscriptions = subscriptionService.getAllPaidForUser(user.getUserId());
-        subscriptions.stream()
-                .forEach(subscription -> {
-                    Timestamp startDate = subscription.getStartDate();
-                    int issuesQuantity = subscription.getIssuesQuantity();
-                    Periodicity periodicity = PeriodicityFactory
-                            .getPeriodicity(subscription.getEdition().getPeriodicity());
-                    int remainingQuantity = QuantityFactory
-                            .getRemainingQuantity(startDate, issuesQuantity, periodicity);
-                    subscription.setIssuesQuantity(remainingQuantity);
-                });
-        req.setAttribute("subscriptions", subscriptions);
-        return PageLocation.MY_SUBSCRIPTIONS_PAGE;
+        }
+        logger.error(ErrorMessage.NOT_AUTHORISED);
+        return null;
+
     }
 
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {

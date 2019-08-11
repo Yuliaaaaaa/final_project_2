@@ -1,7 +1,10 @@
 package controllers;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
 import dtos.SecureUser;
+import exceptionHandling.exceptions.NotAuthorisedException;
+import exceptionHandling.validators.AuthorisationValidator;
 import models.Payment;
 import models.Subscription;
 import org.apache.log4j.Logger;
@@ -33,11 +36,17 @@ public class CartController implements GetMethodController, PostMethodController
      */
     public String doGet(HttpServletRequest req) throws SQLException {
         SecureUser user = (SecureUser) req.getSession().getAttribute("user");
-        if (user == null)
+        try {
+            if (AuthorisationValidator.userAuthorised(user)) {
+                List<Subscription> subscriptionList = subscriptionService.getAllUnpaidForUser(user.getUserId());
+                req.setAttribute("subscriptions", subscriptionList);
+                return PageLocation.CART_PAGE;
+            }
+        } catch (NotAuthorisedException e) {
             return PageLocation.NOT_AUTHORISED;
-        List<Subscription> subscriptionList = subscriptionService.getAllUnpaidForUser(user.getUserId());
-        req.setAttribute("subscriptions", subscriptionList);
-        return PageLocation.CART_PAGE;
+        }
+        logger.error(ErrorMessage.NOT_AUTHORISED);
+        return null;
     }
 
 

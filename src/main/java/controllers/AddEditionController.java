@@ -1,13 +1,18 @@
 package controllers;
 
+import commonlyUsedStrings.ErrorMessage;
 import commonlyUsedStrings.PageLocation;
 import converters.StringConverter;
+import dtos.SecureUser;
 import enums.Category;
 import enums.Periodicity;
-import exceptionHandling.InputDataValidator;
+import exceptionHandling.exceptions.NotAuthorisedException;
+import exceptionHandling.validators.AuthorisationValidator;
+import exceptionHandling.validators.InputDataValidator;
 import factories.CategoryFactory;
 import factories.PeriodicityFactory;
 import models.Edition;
+import org.apache.log4j.Logger;
 import services.EditionService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,16 +26,18 @@ import java.sql.SQLException;
  */
 public class AddEditionController implements GetMethodController, PostMethodController {
     private static final EditionService service = EditionService.getEditionService();
+    private static final Logger logger = Logger.getLogger(AddEditionController.class);
 
     /**
      * @param req
      * @return
      */
-    public String doGet(HttpServletRequest req) {
-        Object admin = req.getSession().getAttribute("admin");
-        if (admin == null)
-            return PageLocation.NOT_AUTHORISED;
-        return PageLocation.ADD_EDITION;
+    public String doGet(HttpServletRequest req) throws NotAuthorisedException {
+        SecureUser user = (SecureUser) req.getSession().getAttribute("user");
+        if (AuthorisationValidator.adminAuthorised(user))
+            return PageLocation.ADD_EDITION;
+        logger.error(ErrorMessage.NOT_AUTHORISED);
+        return null;
     }
 
     /**
@@ -46,7 +53,7 @@ public class AddEditionController implements GetMethodController, PostMethodCont
         String periodicity = req.getParameter("periodicity");
         String price = req.getParameter("price");
         String details = StringConverter.convertToUTF8(req.getParameter("details"));
-        if(!InputDataValidator.editionsDataNotEmpty(title, price, details)) {
+        if (!InputDataValidator.editionsDataNotEmpty(title, price, details)) {
             req.setAttribute("fail", true);
             req.setAttribute("title", title);
             req.setAttribute("category", category);

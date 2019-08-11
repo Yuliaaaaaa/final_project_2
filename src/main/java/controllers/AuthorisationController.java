@@ -2,6 +2,7 @@ package controllers;
 
 import commonlyUsedStrings.AdminData;
 import commonlyUsedStrings.PageLocation;
+import exceptionHandling.validators.InputDataValidator;
 import facade.UserFacade;
 import dtos.SecureUser;
 import org.apache.log4j.Logger;
@@ -37,7 +38,7 @@ public class AuthorisationController implements GetMethodController, PostMethodC
     public String doPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if(email.isEmpty() || password.isEmpty()) {
+        if(!InputDataValidator.authorisationDataNotEmpty(email, password)) {
             req.setAttribute("emptyField", true);
             return PageLocation.AUTHORISATION_PAGE;
         }
