@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="date" uri="../WEB-INF/tags/today.tld" %>
 
 <jsp:include page='base.jsp'/>
 
@@ -23,6 +24,9 @@
 </head>
 <body>
 <div class="box">
+    <span style="position: fixed; left: 700px; top: 130px;">
+        <fmt:message key="label.subscribe.todayIs"/>: <date:today/>
+    </span>
     <span style="position: fixed; left: 750px; top: 150px; font-size: 14px">
     <c:if test="${paid}">
         <p style="color: cadetblue"><fmt:message key="label.subscribe.paySuccess"/></p>
