@@ -1,5 +1,6 @@
 package models;
 
+import enums.Category;
 import enums.Periodicity;
 
 /**
@@ -8,10 +9,11 @@ import enums.Periodicity;
 public class Edition {
     private int editionId;
     private String editionTitle;
-    private String category;
+    private Category category;
     private Periodicity periodicity;
     private String description;
     private double price;
+    private boolean isDeleted;
 
 
     /**
@@ -21,18 +23,20 @@ public class Edition {
      * @param description
      * @param price
      */
-    public Edition(String editionTitle, String category, Periodicity periodicity, String description, double price) {
+    public Edition(String editionTitle, Category category, Periodicity periodicity, String description, double price) {
         this.editionTitle = editionTitle;
         this.category = category;
         this.periodicity = periodicity;
         this.description = description;
         this.price = price;
+        isDeleted = false;
     }
 
     /**
      *
      */
     public Edition() {
+        isDeleted = false;
     }
 
     /**
@@ -67,21 +71,21 @@ public class Edition {
      * @return
      */
     public String getCategory() {
-        return category;
+        return category.toString().toLowerCase();
     }
 
     /**
      * @param category
      */
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
     /**
      * @return
      */
-    public Periodicity getPeriodicity() {
-        return periodicity;
+    public String getPeriodicity() {
+        return periodicity.toString().toLowerCase();
     }
 
     /**
@@ -117,5 +121,19 @@ public class Edition {
      */
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    /**
+     * @return
+     */
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * @param deleted
+     */
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

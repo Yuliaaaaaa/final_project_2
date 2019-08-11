@@ -1,6 +1,9 @@
 package models;
 
+import dtos.SecureUser;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Yuliia Shcherbakova ON 18.07.2019
@@ -11,6 +14,8 @@ public class Payment {
     private int userId;
     private double paymentSum;
     private Timestamp paymentDate;
+    private List<PaymentDetail> paymentDetails;
+    private SecureUser user;
 
     /**
      * @param userId
@@ -84,4 +89,34 @@ public class Payment {
     public void setPaymentDate(Timestamp paymentDate) {
         this.paymentDate = paymentDate;
     }
+
+
+    /**
+     * @return
+     */
+    public List<PaymentDetail> getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    /**
+     * @param paymentDetails
+     */
+    public void setPaymentDetails(List<PaymentDetail> paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
+
+    /**
+     * @return
+     */
+    public SecureUser getUser() {
+        return user;
+    }
+
+    /**
+     * @param user
+     */
+    public void setUser(SecureUser user) {
+        this.user = user;
+    }
+
 }

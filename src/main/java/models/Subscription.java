@@ -1,5 +1,7 @@
 package models;
 
+import factories.PeriodicityFactory;
+
 import java.sql.Timestamp;
 
 /**
@@ -11,8 +13,10 @@ public class Subscription {
     private int userId;
     private int editionId;
     private int issuesQuantity;
-    private Timestamp orderDate;
+    private Timestamp startDate;
+    private Timestamp expireDate;
     private boolean isPaid;
+    private Edition edition;
 
     /**
      * @param userId
@@ -92,15 +96,29 @@ public class Subscription {
     /**
      * @return
      */
-    public Timestamp getOrderDate() {
-        return orderDate;
+    public Timestamp getStartDate() {
+        return startDate;
     }
 
     /**
-     * @param orderDate
+     * @param startDate
      */
-    public void setOrderDate(Timestamp orderDate) {
-        this.orderDate = orderDate;
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return
+     */
+    public Timestamp getExpireDate() {
+        return expireDate;
+    }
+
+    /**
+     * @param expireDate
+     */
+    public void setExpireDate(Timestamp expireDate) {
+        this.expireDate = expireDate;
     }
 
     /**
@@ -115,5 +133,37 @@ public class Subscription {
      */
     public void setPaid(boolean paid) {
         this.isPaid = paid;
+    }
+
+    /**
+     * @return
+     */
+    public Edition getEdition() {
+        return edition;
+    }
+
+    /**
+     * @param edition
+     */
+    public void setEdition(Edition edition) {
+        this.edition = edition;
+    }
+
+    /**
+     * @param userId
+     * @param editionId
+     * @param issuesQuantity
+     * @param periodicity
+     * @return
+     */
+    public static Subscription getSubscription(int userId, int editionId, int issuesQuantity, String periodicity) {
+        Edition edition = new Edition();
+        edition.setPeriodicity(PeriodicityFactory.getPeriodicity(periodicity));
+        Subscription subscription = new Subscription();
+        subscription.setEditionId(editionId);
+        subscription.setIssuesQuantity(issuesQuantity);
+        subscription.setUserId(userId);
+        subscription.setEdition(edition);
+        return subscription;
     }
 }

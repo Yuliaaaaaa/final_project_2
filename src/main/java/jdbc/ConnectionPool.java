@@ -3,7 +3,9 @@ package jdbc;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -45,6 +47,7 @@ public class ConnectionPool {
                         basicDataSource.setMaxIdle(Integer.valueOf(properties.getProperty("maxIdle")));
                         basicDataSource.setMaxTotal(Integer.valueOf(properties.getProperty("maxTotal")));
                         basicDataSource.setInitialSize(Integer.valueOf(properties.getProperty("initialSize")));
+                        connectionPool = new ConnectionPool();
                         logger.info("Connection Pool created!");
                     } catch (FileNotFoundException e) {
                         logger.error("Connection pool not created! File not found!");
